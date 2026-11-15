@@ -1,0 +1,16 @@
+model BankAccount {
+  id                String @unique
+  accountHolderName String
+  shebaId           String
+  cardNumber        String
+  branchCode        String
+  branchName        String
+  turnover          String
+  type              String
+  status            String
+  score             String
+  userId            String
+
+  user                  User                  @relation(fields: [userId], references: [id])
+  bankAccountFacilities BankAccountFacility[]
+}

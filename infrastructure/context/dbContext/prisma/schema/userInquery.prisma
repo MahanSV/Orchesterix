@@ -1,0 +1,11 @@
+model UserInquery {
+  id            String   @unique
+  point         String?
+  guarantees    Json?
+  totalTurnover BigInt?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
+}

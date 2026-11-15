@@ -1,0 +1,8 @@
+model FacilityField {
+  id                 String @unique
+  value              String
+  facilityTemplateId String
+
+  facilityTemplate      FacilityTemplate      @relation(fields: [facilityTemplateId], references: [id])
+  bankAccountFacilities BankAccountFacility[]
+}

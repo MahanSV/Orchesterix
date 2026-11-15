@@ -1,0 +1,10 @@
+model FacilitiesCategory {
+  id        String   @unique
+  name      String
+  key       String
+  order     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  facilityTemplates FacilityTemplate[]
+}

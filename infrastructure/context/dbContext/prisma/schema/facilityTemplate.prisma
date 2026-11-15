@@ -1,0 +1,12 @@
+model FacilityTemplate {
+  id                   String   @unique
+  value                String
+  key                  String
+  order                Int
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+  facilitiesCategoryId String
+
+  facilitiesCategory FacilitiesCategory @relation(fields: [facilitiesCategoryId], references: [id])
+  facilityFields     FacilityField[]
+}

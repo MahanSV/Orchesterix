@@ -1,0 +1,11 @@
+model BankAccountFacility {
+  id              String   @unique
+  value           String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  bankAccountId   String
+  facilityFieldId String
+
+  bankAccount   BankAccount   @relation(fields: [bankAccountId], references: [id])
+  facilityField FacilityField @relation(fields: [facilityFieldId], references: [id])
+}

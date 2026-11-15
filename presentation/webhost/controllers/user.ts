@@ -1,0 +1,140 @@
+import type { Request, Response } from 'express';
+import UserService from '#application/services/UserService.ts';
+import env from "#substructure/env.ts";
+
+
+class UserController {
+    private userService: UserService;
+
+    constructor(userService = new UserService()) {
+        this.userService = userService;
+    };
+
+    public getAllUsers = async (req: Request, res: Response): Promise<any> => {
+        try {
+            const users = await this.userService.getAllUsers();
+
+            res.json(users);
+        } catch (error) {
+            throw error;
+        }
+    };
+
+    public createUser = async (req: Request, res: Response): Promise<any> => {
+        /*const { email, password, role } = req.body;*/
+        try {
+            const command = {
+                email: req.body.email,
+                password: req.body.password,
+                role: req.body.role,
+            };
+
+            const user = await this.userService.createUser(command);
+
+            res.status(201).json(user);
+        } catch (error) {
+            throw error;
+        }
+    };
+
+    public getUser = async (req: Request, res: Response): Promise<any> => {
+        /*const { id } = req.params;*/
+        try {
+            const id = req.params.id;
+
+            const user = await this.userService.getUser(id);
+
+            res.json(user);
+        } catch (error) {
+            throw error;
+        }
+    };
+
+    public updateUser = async (req: Request, res: Response): Promise<any> => {
+        /*const { id } = req.params;
+        const { email, password, role } = req.body;*/
+        try {
+            const command = {
+                id: req.params.id,
+                email: req.body.email,
+                password: req.body.password,
+                role: req.body.role,
+            };
+
+            const user = await this.userService.updateUser(command);
+
+            res.json(user);
+        } catch (error) {
+            throw error;
+        }
+    };
+
+    public deleteUser = async (req: Request, res: Response): Promise<any> => {
+        /*const { id } = req.params;*/
+        try {
+            const id = req.params.id;
+
+            const user = await this.userService.deleteUser(id);
+
+            res.status(204).send();
+        } catch (error) {
+            throw error;
+        }
+    };
+
+    public getUserByEmail = async (req: Request, res: Response): Promise<any> => {
+        /*const { email } = req.params;*/
+        try {
+            const email = req.params.email;
+
+            const user = await this.userService.getUserByEmail(email);
+
+            res.json(user);
+        } catch (error) {
+            throw error;
+        }
+    };
+
+    public loginUser = async (req: Request, res: Response): Promise<any> => {
+        try {
+            const command = {
+                email: req.body.email,
+                password: req.body.password,
+            };
+
+            const user = await this.userService.loginUser(command);
+
+            res.cookie('AccessToken', user.token, {
+                maxAge: env.tokenExpirationTime * 1000,
+                path: '/',
+                domain: env.cookieDomain,
+                secure: env.environment === 'production',
+                httpOnly: true,
+                sameSite: 'lax',
+            });
+
+            res.status(201).json({ user: user.userInfo });
+        } catch (error) {
+            throw error;
+        }
+    };
+
+    public getCurrentUser = async (req: Request, res: Response): Promise<any> => {
+        const { id, email, role } = (req as any).tokenData;
+        res.json({ id, email, role });
+    };
+
+    public logoutUser = async (_req: Request, res: Response): Promise<any> => {
+        res.clearCookie('AccessToken', {
+            path: '/',
+            domain: env.cookieDomain,
+            secure: env.environment === 'production',
+            httpOnly: true,
+            sameSite: 'lax',
+        });
+
+        res.status(204).send();
+    };
+}
+
+export default new UserController();

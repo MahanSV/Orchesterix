@@ -1,0 +1,15 @@
+model User {
+  id         String   @unique
+  name       String
+  lastName   String
+  nationalId String
+  mobile     String
+  status     String
+  password   String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  bankAccounts  BankAccount[]
+  tickets       Ticket[]
+  userInqueries UserInquery?
+}

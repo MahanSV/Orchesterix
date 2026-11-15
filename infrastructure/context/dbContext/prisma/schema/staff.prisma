@@ -1,0 +1,12 @@
+model Staff {
+  id         String   @unique
+  name       String
+  lastName   String
+  nationalId String
+  role       String
+  status     String
+  password   String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  ticket     Ticket?
+}

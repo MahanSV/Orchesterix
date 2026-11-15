@@ -22,3 +22,9 @@ The server listens on `http://localhost:3000` by default. Set `PORT` in `.env` t
 
 - `GET /` — API welcome message
 - `GET /health` — health-check endpoint
+- `GET /docs` — generated OpenAPI document
+- `GET /api` — lists the migrated API resource groups
+
+The previous Express route map referenced controller modules that are not
+present in this repository. The corresponding Hono paths return `501` until
+their controllers are added.
