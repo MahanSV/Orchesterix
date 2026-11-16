@@ -1,9 +1,5 @@
 import {SimpleUserDTO, UserDTO, UserLoginDTO} from "#application/dto/UserDTO.ts";
 import User from "#domain/models/User.ts";
-import {OrderMapper} from "#application/mappers/OrderMapper.ts";
-import {NotificationMapper} from "#application/mappers/NotificationMapper.ts";
-import {WishlistMapper} from "#application/mappers/WishlistMapper.ts";
-import {BulkUploadBatchMapper} from "#application/mappers/BulkUploadBatchMapper.ts";
 
 
 export class UserMapper {
@@ -21,10 +17,6 @@ export class UserMapper {
                         status: entity.status,
                         createdAt: entity.createdAt,
                         updatedAt: entity.updatedAt,
-                        orders: entity.orders ? OrderMapper.toCustomerOrderDTOList(entity.orders) : undefined,
-                        notifications: entity.notifications ? NotificationMapper.toDTOList(entity.notifications) : undefined,
-                        wishlists: entity.wishlists ? WishlistMapper.toDTOList(entity.wishlists) : undefined,
-                        bulkUploadBatches: entity.bulkUploadBatches ? BulkUploadBatchMapper.toDTOList(entity.bulkUploadBatches) : undefined,
                 };
         };
         /**
