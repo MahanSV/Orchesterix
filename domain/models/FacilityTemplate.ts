@@ -3,7 +3,7 @@ import facilitiesCategory, { FacilitiesCategorySnapshotParams } from '#models/Fa
 import FacilityField, { FacilityFieldSnapshotParams } from '#models/FacilityField.ts';
 import FacilitiesCategory from '#models/FacilitiesCategory.ts';
 
-export interface FacilityFieldConstructorParams {
+export interface FacilityTemplateConstructorParams {
   id: string;
   value: string;
   key: string;
@@ -41,7 +41,7 @@ class FacilityTemplate extends BaseModel {
   };
 
 
-  static create(params: FacilityFieldConstructorParams): FacilityTemplate {
+  static create(params: FacilityTemplateConstructorParams): FacilityTemplate {
     const facilityTemplate = new FacilityTemplate();
 
     if (params?.id) {
