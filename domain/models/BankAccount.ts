@@ -1,6 +1,7 @@
 import BaseModel from '#models/base/baseModel.ts';
 import User, {UserSnapshotParams} from "#models/User.ts";
 import BankAccountFacility, {BankAccountFacilitySnapshotParams} from "#models/BankAccountFacility.ts";
+import { BankAccountStatus, bankAccountType } from '#domain/enums/bankAccount.ts';
 
 export interface BankAccountConstructorParams {
     id: string;
@@ -10,8 +11,8 @@ export interface BankAccountConstructorParams {
     branchCode: string;
     branchName: string;
     turnover: string;
-    type: string;
-    status: string;
+    type: bankAccountType;
+    status: BankAccountStatus;
     score: string;
     userId: string;
 }
@@ -24,8 +25,8 @@ export interface BankAccountSnapshotParams {
     branchCode: string;
     branchName: string;
     turnover: string;
-    type: string;
-    status: string;
+    type: bankAccountType;
+    status: BankAccountStatus;
     score: string;
     userId: string;
     user?: UserSnapshotParams;
@@ -39,8 +40,8 @@ class BankAccount extends BaseModel {
     private _branchCode!: string;
     private _branchName!: string;
     private _turnover!: string;
-    private _type!: string;
-    private _status!: string;
+    private _type!: bankAccountType;
+    private _status!: BankAccountStatus;
     private _score!: string;
     private _userId!: string;
     private _user?: User;

@@ -25,7 +25,6 @@ export interface FacilityTemplateSnapshotParams {
   facilityFields: FacilityFieldSnapshotParams[];
 }
 
-
 class FacilityTemplate extends BaseModel {
   private _value!: string;
   private _key!: string;
@@ -39,7 +38,6 @@ class FacilityTemplate extends BaseModel {
   constructor() {
     super();
   };
-
 
   static create(params: FacilityTemplateConstructorParams): FacilityTemplate {
     const facilityTemplate = new FacilityTemplate();

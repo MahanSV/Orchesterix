@@ -1,24 +1,25 @@
 import BaseModel from '#models/base/baseModel.ts';
 import User, {UserSnapshotParams} from "#models/User.ts";
 import Staff, {StaffSnapshotParams} from "#models/Staff.ts";
+import { TicketStatus } from '#domain/enums/ticket.ts';
 
 export interface TicketConstructorParams {
     id: string;
     description: string;
     attachment: string;
-    status: string;
+    status: TicketStatus;
     createdAt: Date;
     updatedAt: Date;
     closedAt?: Date;
     userId: string;
-    staffId?: string
+    staffId?: string;
 }
 
 export interface TicketSnapshotParams {
     id: string;
     description: string;
     attachment: string;
-    status: string;
+    status: TicketStatus;
     createdAt: Date;
     updatedAt: Date;
     closedAt?: Date;
@@ -31,7 +32,7 @@ export interface TicketSnapshotParams {
 class Ticket extends BaseModel {
     private _description!: string;
     private _attachment!: string;
-    private _status!: string;
+    private _status!: TicketStatus;
     private _createdAt!: Date;
     private _updatedAt!: Date;
     private _closedAt?: Date;
@@ -43,7 +44,6 @@ class Ticket extends BaseModel {
     constructor() {
         super();
     };
-
 
     static create(params: TicketConstructorParams): Ticket {
         const ticket = new Ticket();

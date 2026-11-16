@@ -2,6 +2,7 @@ import BaseModel from '#models/base/baseModel.ts';
 import UserInquery, {UserInquerySnapshotParams} from "#models/UserInquery.ts";
 import Ticket, {TicketSnapshotParams} from "#models/Ticket.ts";
 import BankAccount, {BankAccountSnapshotParams} from "#models/BankAccount.ts";
+import { userStatus } from '#domain/enums/user.ts';
 
 
 export interface UserConstructorParams {
@@ -10,7 +11,7 @@ export interface UserConstructorParams {
     lastName: string;
     nationalId: string;
     mobile: string;
-    status: string;
+    status: userStatus;
     password: string;
     createdAt: Date;
     updatedAt: Date;
@@ -22,7 +23,7 @@ export interface UserSnapshotParams {
     lastName: string;
     nationalId: string;
     mobile: string;
-    status: string;
+    status: userStatus;
     password: string;
     createdAt: Date;
     updatedAt: Date;
@@ -36,7 +37,7 @@ class User extends BaseModel {
     private _lastName!: string;
     private _nationalId!: string;
     private _mobile!: string;
-    private _status!: string;
+    private _status!: userStatus;
     private _password!: string;
     private _createdAt!: Date;
     private _updatedAt!: Date;

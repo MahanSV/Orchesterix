@@ -31,6 +31,10 @@ class BankAccountFacility extends BaseModel {
     private _BankAccount?: BankAccount;
     private _facilityField?: FacilityField;
 
+    constructor() {
+      super();
+    };
+
     static create(params: BankAccountFacilityConstructorParams): BankAccountFacility {
         const bankAccountFacility = new BankAccountFacility();
 
