@@ -1,16 +1,19 @@
-import {UserType} from "#domain/enums/userType.ts";
+import { userStatus } from '#domain/enums/user.ts';
 
 export type createUserCommand = {
-    email: string;
-    password: string;
-    role: UserType;
+  name: string;
+  lastName: string;
+  nationalId: string;
+  mobile: string;
+  status: userStatus;
+  password: string;
 };
 
 export type updateUserCommand = {
     id: string;
     email: string;
     password: string;
-    role: UserType;
+    role: string;
 };
 
 export type createCustomerCommand = {
