@@ -1,14 +1,24 @@
 model Ticket {
-  id          String    @unique
+  id          String       @unique
   description String
   attachment  String
-  status      String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  status      ticketStatus
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
   closedAt    DateTime?
   userId      String
-  staffId     String?   @unique
+  staffId     String?      @unique
 
   user  User   @relation(fields: [userId], references: [id])
   staff Staff? @relation(fields: [staffId], references: [id])
+}
+
+enum ticketStatus {
+  OPEN
+  IN_PROGRESS
+  WAITING_FOR_USER
+  WAITING_FOR_INTERNAL_UNIT
+  RESOLVED
+  CLOSED
+  CANCELLED
 }

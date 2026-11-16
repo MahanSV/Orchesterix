@@ -1,13 +1,14 @@
 import BaseModel from '#models/base/baseModel.ts';
 import Ticket, {TicketSnapshotParams} from "#models/Ticket.ts";
+import { StaffRole, StaffStatus } from '#domain/enums/staff.ts';
 
 export interface StaffConstructorParams {
     id: string;
     name: string;
     lastName: string;
     nationalId: string;
-    role: string;
-    status: string;
+    role: StaffRole;
+    status: StaffStatus;
     password: string;
     createdAt: Date;
     updatedAt: Date;
@@ -18,8 +19,8 @@ export interface StaffSnapshotParams {
     name: string;
     lastName: string;
     nationalId: string;
-    role: string;
-    status: string;
+    role: StaffRole;
+    status: StaffStatus;
     password: string;
     createdAt: Date;
     updatedAt: Date;
@@ -30,19 +31,18 @@ class Staff extends BaseModel {
     private _name!: string;
     private _lastName!: string;
     private _nationalId!: string;
-    private _role!: string;
-    private _status!: string;
+    private _role!: StaffRole;
+    private _status!: StaffStatus;
     private _password!: string;
     private _createdAt!: Date;
     private _updatedAt!: Date;
     private _ticket?: Ticket;
 
-
     constructor() {
         super();
     };
 
-    static create(params: StaffSnapshotParams): Staff {
+    static create(params: StaffConstructorParams): Staff {
         const staff = new Staff();
 
         if (params?.id) {

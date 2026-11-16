@@ -1,16 +1,33 @@
 model BankAccount {
-  id                String @unique
+  id                String            @unique
   accountHolderName String
   shebaId           String
   cardNumber        String
   branchCode        String
   branchName        String
   turnover          String
-  type              String
-  status            String
+  type              bankAccountType
+  status            bankAccountStatus
   score             String
   userId            String
 
   user                  User                  @relation(fields: [userId], references: [id])
   bankAccountFacilities BankAccountFacility[]
+}
+
+enum bankAccountStatus {
+  ACTIVE
+  INACTIVE
+  DORMANT
+  BLOCKED
+  PENDING_ACTIVATION
+  CLOSED
+}
+
+enum bankAccountType {
+  CURRENT
+  QARZ_AL_HASAN_SAVINGS
+  SHORT_TERM_ORDINARY
+  SHORT_TERM_SPECIAL
+  LONG_TERM
 }

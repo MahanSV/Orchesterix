@@ -1,15 +1,20 @@
 model User {
-  id         String   @unique
+  id         String     @unique
   name       String
   lastName   String
   nationalId String
   mobile     String
-  status     String
+  status     userStatus
   password   String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
 
   bankAccounts  BankAccount[]
   tickets       Ticket[]
   userInqueries UserInquery?
+}
+
+enum userStatus {
+  Active
+  Inactive
 }
