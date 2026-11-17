@@ -18,7 +18,7 @@ export interface BankAccountFacilitySnapshotParams {
     updatedAt: Date;
     bankAccountId: string;
     facilityFieldId: string;
-    BankAccount?: BankAccountSnapshotParams;
+    bankAccount?: BankAccountSnapshotParams;
     facilityField?: FacilityFieldSnapshotParams;
 }
 
@@ -28,7 +28,7 @@ class BankAccountFacility extends BaseModel {
     private _updatedAt!: Date;
     private _bankAccountId!: string;
     private _facilityFieldId!: string;
-    private _BankAccount?: BankAccount;
+    private _bankAccount?: BankAccount;
     private _facilityField?: FacilityField;
 
     constructor() {
@@ -59,7 +59,7 @@ class BankAccountFacility extends BaseModel {
         bankAccountFacility.updatedAt = snapshot.updatedAt;
         bankAccountFacility.bankAccountId = snapshot.bankAccountId;
         bankAccountFacility.facilityFieldId = snapshot.facilityFieldId;
-        bankAccountFacility.BankAccount = snapshot.BankAccount && BankAccount.createFromSnapshot(snapshot.BankAccount);
+        bankAccountFacility.BankAccount = snapshot.bankAccount && BankAccount.createFromSnapshot(snapshot.bankAccount);
         bankAccountFacility.facilityField = snapshot.facilityField && FacilityField.createFromSnapshot(snapshot.facilityField);
 
         return bankAccountFacility;
@@ -100,11 +100,11 @@ class BankAccountFacility extends BaseModel {
         this._facilityFieldId = value;
     };
 
-    public get BankAccount() {
-        return this._BankAccount;
+    public get bankAccount() {
+        return this._bankAccount;
     };
-    public set BankAccount(value) {
-        this._BankAccount = value;
+    public set bankAccount(value) {
+        this._bankAccount = value;
     };
 
     public get facilityField() {
