@@ -11,7 +11,8 @@ import httpStatus from 'http-status';
 export default class StaffRepository extends BaseRepository<Staff> implements StaffRepositoryInterface {
   constructor() {
     super(Staff.createFromSnapshot);
-  }
+  };
+
   async findById(id: string): Promise<Staff | null> {
     const dataModel = await prisma.staff.findUnique({
       where: { id },
