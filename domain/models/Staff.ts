@@ -78,31 +78,31 @@ class Staff extends BaseModel {
         return staff;
     };
 
-    public get name(): string {
+    public get name() {
         return this._name;
     };
-    public set name(value: string) {
+    public set name(value) {
         this._name = value;
     };
 
-    public get lastName(): string {
+    public get lastName() {
         return this._lastName;
     };
-    public set lastName(value: string) {
+    public set lastName(value) {
         this._lastName = value;
     };
 
-    public get nationalId(): string {
+    public get nationalId() {
         return this._nationalId;
     };
-    public set nationalId(value: string) {
+    public set nationalId(value) {
         this._nationalId = value;
     };
 
-    public get role(): string {
+    public get role() {
         return this._role;
     };
-    public set role(value: string) {
+    public set role(value) {
         this._role = value;
     };
 
