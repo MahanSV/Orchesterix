@@ -2,8 +2,8 @@ model User {
   id         String     @unique
   name       String
   lastName   String
-  nationalId String
-  mobile     String
+  nationalId String     @unique
+  mobile     String     @unique
   status     userStatus
   password   String
   createdAt  DateTime   @default(now())
