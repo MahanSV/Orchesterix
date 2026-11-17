@@ -12,7 +12,7 @@ export class FAQFactory {
       id : crypto.randomUUID(), // Generate ID if isn't provided
       question: command.question,
       answer: command.answer,
-      order: command.order,
+      order: Number(command.order),
       createdAt: command.createdAt || Date.now(),
       updatedAt: command.updatedAt || Date.now(),
     });

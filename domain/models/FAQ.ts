@@ -4,7 +4,7 @@ export interface FAQConstructorParams {
     id: string;
     question: string;
     answer: string;
-    order: string;
+    order: number;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -13,7 +13,7 @@ export interface FAQSnapshotParams {
     id: string;
     question: string;
     answer: string;
-    order: string;
+    order: number;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -21,7 +21,7 @@ export interface FAQSnapshotParams {
 class FAQ extends BaseModel {
     private _question!: string;
     private _answer!: string;
-    private _order!: string;
+    private _order!: number;
     private _createdAt!: Date;
     private _updatedAt!: Date;
 
