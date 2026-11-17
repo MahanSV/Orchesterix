@@ -9,5 +9,5 @@ export interface UserInqueryDTO {
   createdAt: Date;
   updatedAt: Date;
   userId: string;
-  user: UserDTO;
+  user?: UserDTO;
 }
