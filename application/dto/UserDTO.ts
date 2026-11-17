@@ -1,4 +1,7 @@
 import { userStatus } from '#domain/enums/user.ts';
+import { BankAccountDTO } from '#application/dto/BankAccountDTO.ts';
+import { TicketDTO } from '#application/dto/TicketDTO.ts';
+import { UserInqueryDTO } from '#application/dto/UserInqueryDTO.ts';
 
 export interface UserDTO {
   id: string;

@@ -1,11 +1,12 @@
-import { StaffStatus } from '#domain/enums/staff.ts';
+import { StaffRole, StaffStatus } from '#domain/enums/staff.ts';
+import { TicketDTO } from '#application/dto/TicketDTO.ts';
 
 export interface StaffDTO {
   id: string;
   name: string;
   lastName: string;
   nationalId: string;
-  role: string;
+  role: StaffRole;
   status: StaffStatus;
   password: string;
   createdAt: Date;
@@ -20,6 +21,6 @@ export interface StaffLoginDTO {
     name: string;
     lastName: string;
     nationalId: string;
-    role: string;
+    role: StaffRole;
   };
 }
