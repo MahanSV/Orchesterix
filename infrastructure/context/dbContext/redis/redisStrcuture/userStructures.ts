@@ -1,6 +1,6 @@
 
-function tokenKeyStructure(username: string): string {
-	return `${username}:token`;
+function tokenKeyStructure(nationalId: string): string {
+	return `${nationalId}:token`;
 }
 
 export {
