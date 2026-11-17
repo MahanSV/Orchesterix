@@ -91,87 +91,87 @@ class BankAccount extends BaseModel {
         return bankAccount;
     };
 
-    private get accountHolderName() {
+    public get accountHolderName() {
         return this._accountHolderName;
     };
-    private set accountHolderName(value) {
+    public set accountHolderName(value) {
         this._accountHolderName = value;
     };
 
-    private get shebaId() {
+    public get shebaId() {
         return this._shebaId;
     };
-    private set shebaId(value) {
+    public set shebaId(value) {
         this._shebaId = value;
     };
 
-    private get cardNumber() {
+    public get cardNumber() {
         return this._cardNumber;
     };
-    private set cardNumber(value) {
+    public set cardNumber(value) {
         this._cardNumber = value;
     };
 
-    private get branchCode() {
+    public get branchCode() {
         return this._branchCode;
     };
-    private set branchCode(value) {
+    public set branchCode(value) {
         this._branchCode = value;
     };
 
-    private get branchName() {
+    public get branchName() {
         return this._branchName;
     };
-    private set branchName(value) {
+    public set branchName(value) {
         this._branchName = value;
     };
 
-    private get turnover() {
+    public get turnover() {
         return this._turnover;
     };
-    private set turnover(value) {
+    public set turnover(value) {
         this._turnover = value;
     };
 
-    private get type() {
+    public get type() {
         return this._type;
     };
-    private set type(value) {
+    public set type(value) {
         this._type = value;
     };
 
-    private get status() {
+    public get status() {
         return this._status;
     };
-    private set status(value) {
+    public set status(value) {
         this._status = value;
     };
 
-    private get score() {
+    public get score() {
         return this._score;
     };
-    private set score(value) {
+    public set score(value) {
         this._score = value;
     };
 
-    private get userId() {
+    public get userId() {
         return this._userId;
     };
-    private set userId(value) {
+    public set userId(value) {
         this._userId = value;
     };
 
-    private get user() {
+    public get user() {
         return this._user;
     };
-    private set user(value) {
+    public set user(value) {
         this._user = value;
     };
 
-    private get bankAccountFacilities() {
+    public get bankAccountFacilities() {
         return this._bankAccountFacilities;
     };
-    private set bankAccountFacilities(value) {
+    public set bankAccountFacilities(value) {
         this._bankAccountFacilities = value;
     };
 }
