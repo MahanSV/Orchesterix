@@ -8,15 +8,18 @@ export class UserMapper {
         */
         public static toDTO(entity: User): UserDTO {
                 return {
-                        id: entity.id,
-                        name: entity.name,
-                        lastName: entity.lastName,
-                        email: entity.email,
-                        role: entity.role,
-                        mobile: entity.mobile,
-                        status: entity.status,
-                        createdAt: entity.createdAt,
-                        updatedAt: entity.updatedAt,
+                  id: entity.id,
+                  name: entity.name,
+                  lastName: entity.lastName,
+                  nationalId: entity.nationalId,
+                  mobile: entity.mobile,
+                  status: entity.status,
+                  password: entity.password,
+                  createdAt: entity.createdAt,
+                  updatedAt: entity.updatedAt,
+                  bankAccounts: entity.bankAccounts ? BankAccountMapper.toDTOList(entity.bankAccounts) : [],
+                  tickets: entity.tickets ? TicketMapper.toDTOList(entity.tickets) : [],
+                  userInqueries: entity.userInqueries ? UserInqueryMapper.toDTO(entity.userInqueries) : null,
                 };
         };
         /**
@@ -49,11 +52,11 @@ export class UserMapper {
             return {
                 token: userToken,
                 userInfo: {
-                    id: entity.id,
-                    name: entity.name,
-                    lastName: entity.lastName,
-                    email: entity.email,
-                    role: entity.role,
+                  id: entity.id,
+                  name: entity.name,
+                  lastName: entity.lastName,
+                  nationalId: entity.nationalId,
+                  mobile: entity.mobile,
                 }
             };
         }

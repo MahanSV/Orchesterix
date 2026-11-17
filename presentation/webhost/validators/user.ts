@@ -1,9 +1,13 @@
 import { z } from 'zod';
 
+const userStatus = z.enum(['Active', 'Inactive']);
+
 const createUserSchema = z.object({
-    email: z.string({ error: "email is required." }).min(1, { error: "email is required." }),
+    name: z.string({ error: "name is required." }).min(1, { error: "name is required." }),
+    lastName: z.string({ error: "lastName is required." }).min(1, { error: "lastName is required." }),
+    nationalId: z.string({ error: "nationalId is required." }).min(1, { error: "nationalId is required." }),
+    mobile: z.string({ error: "mobile is required." }).min(1, { error: "mobile is required." }),
     password: z.string({ error: "password is required." }).min(1, { error: "password is required." }),
-    role: z.string({ error: "role is required." }).min(1, { error: "role is required." }),
 });
 
 const getUserSchema = z.object({
@@ -26,37 +30,43 @@ const getUserByEmailSchema = z.object({
 });
 
 const loginUserSchema = z.object({
-    email: z.string({ error: "email is required." }).min(1, { error: "email is required." }),
-    password: z.string({ error: "password is required." }).min(1, { error: "password is required." }),
+  mobile: z.string({ error: "mobile is required." }).min(1, { error: "mobile is required." }),
+  password: z.string({ error: "password is required." }).min(1, { error: "password is required." }),
 });
 
 const userType = z.enum(['admin', 'user', 'merchant']);
 
 const userDTOSchema = z.object({
-    id: z.string(),
-    name: z.string(),
-    lastName: z.string(),
-    email: z.string(),
-    role: userType,
-    mobile: z.string(),
-    status: z.string(),
-    createdAt: z.date().nullable(),
-    updatedAt: z.date().nullable(),
+  id: z.string(),
+  name: z.string(),
+  lastName: z.string(),
+  nationalId: z.string(),
+  mobile: z.string(),
+  status: z.string(),
+  password: z.string(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
 });
 
 const simpleUserDTO = z.object({
-    id: z.string(),
-    email: z.string(),
-    role: userType
+  id: z.string(),
+  name: z.string(),
+  lastName: z.string(),
+  nationalId: z.string(),
+  mobile: z.string(),
+  status: userStatus,
+  password: z.string(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
 });
 
 const userLoginDTOSchema = z.object({
     user: z.object({
-        id: z.string(),
-        name: z.string(),
-        lastName: z.string(),
-        email: z.string(),
-        role: userType
+      id: z.string(),
+      name: z.string(),
+      lastName: z.string(),
+      nationalId: z.string(),
+      mobile: z.string(),
     })
 });
 

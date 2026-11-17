@@ -8,3 +8,9 @@ export type createStaffCommand = {
   status: StaffStatus;
   password: string;
 };
+
+export type loginStaffCommand = {
+  nationalId: string;
+  password: string;
+  role: StaffRole;
+};

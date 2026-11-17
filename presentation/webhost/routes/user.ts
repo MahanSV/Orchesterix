@@ -9,7 +9,7 @@ import {
     updateUserSchema,
     simpleUserDTO,
     userDTOSchema, loginUserSchema, userLoginDTOSchema,
-} from "#webhost/validators/user/user.ts";
+} from "#webhost/validators/user.ts";
 import validate from "#middlewares/validation.ts";
 import { createApiRouter } from '#webhost/docs/openApiRouter.ts';
 import { z } from 'zod';
@@ -17,23 +17,6 @@ import {errorSchema} from "#webhost/validators/errorSchema.ts";
 
 const router = express.Router();
 const api = createApiRouter(router, '/users');
-
-api.get(
-    '/',
-    {
-        tags: ['Users'],
-        responses: {
-            200: {
-                description: 'List of all users',
-                content: {
-                    'application/json': { schema: z.array(simpleUserDTO) }
-                }
-            }
-        }
-    },
-    // authenticate,
-    UserController.getAllUsers
-);
 
 api.post(
     '/',
@@ -47,15 +30,15 @@ api.post(
             }
         },
         responses: {
-            201: {
+            200: {
                 description: 'add user',
                 content: {
-                    'application/json': { schema: simpleUserDTO }
+                    'application/json': { schema: userDTOSchema }
                 }
             }
         }
     },
-    // authenticate,
+    authenticate,
     validate(createUserSchema),
     UserController.createUser
 );
@@ -72,48 +55,48 @@ api.post(
             }
         },
         responses: {
-            201: {
-                description: 'add user',
-                content: {
-                    'application/json': { schema: userLoginDTOSchema }
-                }
+          200: {
+              description: 'add user',
+              content: {
+                  'application/json': { schema: userLoginDTOSchema }
+              }
+          },
+          400: {
+            description: 'Bad Request',
+            content: {
+              'application/json': {
+                schema: errorSchema
+              }
             },
-            404: {
-                description: 'Not Found',
-                content: {
-                    'application/json': {
-                        schema: errorSchema
-                    }
-                },
-            },
+          },
+          401: {
+            description: 'Unauthenticated',
+            content: {
+              'application/json': { schema: errorSchema }
+            }
+          },
+          404: {
+              description: 'Not Found',
+              content: {
+                  'application/json': {
+                      schema: errorSchema
+                  }
+              },
+          },
+          500: {
+            description: 'Internal Server Error',
+            content: {
+              'application/json': {
+                schema: z.object({
+                  error: z.string()
+                })
+              }
+            }
+          }
         }
     },
-    // authenticate,
     validate(loginUserSchema),
     UserController.loginUser
-);
-
-api.get(
-    '/me',
-    {
-        tags: ['Users'],
-        responses: {
-            200: {
-                description: 'Authenticated user',
-                content: {
-                    'application/json': { schema: simpleUserDTO }
-                }
-            },
-            401: {
-                description: 'Unauthenticated',
-                content: {
-                    'application/json': { schema: errorSchema }
-                }
-            }
-        }
-    },
-    authenticate,
-    UserController.getCurrentUser
 );
 
 api.post(
@@ -126,6 +109,7 @@ api.post(
     },
     UserController.logoutUser
 );
+
 api.get(
     '/:id',
     {
@@ -140,110 +124,43 @@ api.get(
                     'application/json': { schema: simpleUserDTO }
                 }
             },
-            404: {
-                description: 'Not Found',
-                content: {
-                    'application/json': {
-                        schema: errorSchema
-                    }
-                },
+          400: {
+            description: 'Bad Request',
+            content: {
+              'application/json': {
+                schema: errorSchema
+              }
             },
+          },
+          401: {
+            description: 'Unauthenticated',
+            content: {
+              'application/json': { schema: errorSchema }
+            }
+          },
+          404: {
+            description: 'Not Found',
+            content: {
+              'application/json': {
+                schema: errorSchema
+              }
+            },
+          },
+          500: {
+            description: 'Internal Server Error',
+            content: {
+              'application/json': {
+                schema: z.object({
+                  error: z.string()
+                })
+              }
+            }
+          }
         }
     },
-    // authenticate,
+    authenticate,
     validate(getUserSchema),
     UserController.getUser
-);
-
-api.put(
-    '/:id',
-    {
-        tags: ['Users'],
-        request: {
-            params: updateUserSchema.pick({ id: true }),
-            body: {
-                content: {
-                    'application/json': {
-                        schema: updateUserSchema.omit({ id: true })
-                    }
-                }
-            }
-        },
-        responses: {
-            200: {
-                description: 'Update user',
-                content: {
-                    'application/json': { schema: userDTOSchema }
-                }
-            },
-            400: {
-                description: 'Bad Request',
-                content: {
-                    'application/json': {
-                        schema: errorSchema
-                    }
-                },
-            },
-        }
-    },
-    // authenticate,
-    validate(updateUserSchema),
-    UserController.updateUser
-);
-
-api.delete(
-    '/:id',
-    {
-        tags: ['Users'],
-        request: {
-            params: deleteUserSchema
-        },
-        responses: {
-            204: {
-                description: 'Delete user',
-            },
-            400: {
-                description: 'Bad Request',
-                content: {
-                    'application/json': {
-                        schema: errorSchema
-                    }
-                },
-            },
-        }
-    },
-    // authenticate,
-    validate(deleteUserSchema),
-    UserController.deleteUser
-);
-
-api.get(
-    '/email/:email',
-    {
-        tags: ['Users'],
-        request: {
-            params: getUserByEmailSchema
-        },
-        responses: {
-            200: {
-                description: 'get user by email',
-                content: {
-                    'application/json': { schema: userDTOSchema }
-                }
-            },
-            404: {
-                description: 'Not Found',
-                content: {
-                    'application/json': {
-                        schema: errorSchema
-                    }
-                },
-            },
-        }
-    },
-    // authenticate,
-    validate(getUserByEmailSchema),
-    UserController.getUserByEmail
 );
 
 export default router;

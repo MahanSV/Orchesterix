@@ -5,7 +5,6 @@ export type createUserCommand = {
   lastName: string;
   nationalId: string;
   mobile: string;
-  status: userStatus;
   password: string;
 };
 
@@ -24,6 +23,6 @@ export type createCustomerCommand = {
 };
 
 export type loginUserCommand = {
-    email: string;
+    mobile: string;
     password: string;
 };

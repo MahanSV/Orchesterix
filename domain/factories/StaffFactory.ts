@@ -2,6 +2,7 @@ import crypto from "crypto";
 import Staff from '#models/Staff.ts';
 import { encrypt } from '#substructure/utils/encryption.ts';
 import { createStaffCommand } from '#application/types/staff/command.ts';
+import { StaffRole, StaffStatus } from '#domain/enums/staff.ts';
 
 export class StaffFactory {
   /**
@@ -13,8 +14,8 @@ export class StaffFactory {
       name: command.name,
       lastName: command.lastName,
       nationalId: command.nationalId,
-      role: command.role,
-      status: command.status,
+      role: command.role || StaffRole.support,
+      status: StaffStatus.active,
       password: encrypt(command.password),
       createdAt: command.createdAt || Date.now(),
       updatedAt: command.updatedAt || Date.now(),

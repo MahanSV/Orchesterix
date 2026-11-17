@@ -1,17 +1,19 @@
+import { userStatus } from '#domain/enums/user.ts';
 
 export interface UserDTO {
-    id: string;
-    name: string;
-    lastName: string;
-    email: string;
-    // password: string;
-    role: string;
-    mobile: string;
-    status: string;
-    createdAt?: Date;
-    updatedAt?: Date;
+  id: string;
+  name: string;
+  lastName: string;
+  nationalId: string;
+  mobile: string;
+  status: userStatus;
+  password: string;
+  createdAt: Date;
+  updatedAt: Date;
+  bankAccounts?: BankAccountDTO[];
+  tickets?: TicketDTO[];
+  userInqueries?: UserInqueryDTO;
 }
-
 
 export interface SimpleUserDTO {
     id: string;
@@ -22,10 +24,10 @@ export interface SimpleUserDTO {
 export interface UserLoginDTO {
     token: string;
     userInfo: {
-        id: string;
-        name: string;
-        lastName: string;
-        email: string;
-        role: string;
+      id: string;
+      name: string;
+      lastName: string;
+      nationalId: string;
+      mobile: string;
     };
 }

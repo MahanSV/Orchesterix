@@ -14,6 +14,7 @@ import {redisSet} from "#context/dbContext/redis/redis.ts";
 import {generateJWSToken} from "#application/services/TokenService.ts";
 import {add} from "date-fns";
 import env from "#substructure/env.ts";
+import { compare } from '#substructure/utils/encryption.js';
 
 export default class UserService implements UserServiceInterface {
     private userRepository: UserRepositoryInterface;
@@ -22,86 +23,57 @@ export default class UserService implements UserServiceInterface {
         this.userRepository = userRepository;
     };
 
-    async getAllUsers(): Promise<SimpleUserDTO[]>  {
-        const allUsers = await this.userRepository.getAllUsers();
+    async createUser(command: createUserCommand): Promise<UserDTO> {
+        const existingUser = await this.userRepository.getUserByNationalIdAndMobile(
+          command.nationalId, command.mobile
+        );
 
-        return UserMapper.toSimpleUserDTOList(allUsers);
-    };
+        if (existingUser)
+          throw new ApiError(httpStatus.BAD_REQUEST, "کاربر قبلا ثبت نام شده.", "Error");
 
-    async createUser(command: createUserCommand): Promise<SimpleUserDTO> {
-        const userExistEmail = await this.userRepository.getUserByEmail(command.email);
+        const userEntity = UserFactory.create(command);
 
-        if (userExistEmail) throw new ApiError(httpStatus.CONFLICT, "Email already exist.", "Error");
+        const addUser = await this.userRepository.createUser(userEntity);
 
-        const entity = await UserFactory.create(command.email, command.password, command.role);
+        if (!addUser)
+          throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'خطا در هنگام ثبت کاربر.', 'Error');
 
-        const createUser = await this.userRepository.createUser(entity);
-
-        if (!createUser) throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, "Failed to create user.", "Error");
-
-        return UserMapper.toSimpleUserDTO(createUser);
+        return UserMapper.toDTO(userEntity);
     };
 
     async getUser(id: string): Promise<SimpleUserDTO> {
-        const user = await this.userRepository.getUser(id);
+        const user = await this.userRepository.getUserById(id);
 
         if (!user) throw new ApiError(httpStatus.NOT_FOUND, "Failed to get user.", "Error");
 
         return UserMapper.toSimpleUserDTO(user);
     };
 
-    async updateUser(command: updateUserCommand): Promise<UserDTO> {
-        const checkUserExist = await this.userRepository.getUser(command.id);
-
-        if (!checkUserExist) throw new ApiError(httpStatus.BAD_REQUEST, "User doesn't exist", "Error");
-
-        const updatedUser = await this.userRepository.updateUser(command);
-
-        return UserMapper.toDTO(updatedUser);
-    };
-
-    async deleteUser(id: string): Promise<UserDTO> {
-        const checkUserExist = await this.userRepository.getUser(id);
-
-        if (!checkUserExist) throw new ApiError(httpStatus.BAD_REQUEST, "User doesn't exist", "Error");
-
-        const deleteUser = await this.userRepository.deleteUser(id);
-
-        return UserMapper.toDTO(deleteUser);
-    };
-
-    async getUserByEmail(email: string): Promise<UserDTO | null> {
-        const user = await this.userRepository.getUserByEmail(email);
-
-        if (!user) throw new ApiError(httpStatus.NOT_FOUND, "User doesn't exist", "Error");
-
-        return UserMapper.toDTO(user);
-    };
-
     async loginUser(command: loginUserCommand): Promise<UserLoginDTO> {
-        const user = await this.userRepository.getUserByEmail(command.email);
+        const user = await this.userRepository.getUserByMobile(command.mobile);
 
-        if (!user) throw new ApiError(httpStatus.NOT_FOUND, "Email or password is incorrect", "Error");
+        if (!user)
+          throw new ApiError(httpStatus.NOT_FOUND, "رمز عبور یا شماره تلفن نادرست می باشد. ", "Error");
 
-        const isPasswordCorrect = await bcrypt.compare(
-              command.password,
-              user.password
+        const isPasswordCorrect = compare(
+          user.password,
+          command.password
         );
 
         if (!isPasswordCorrect)
-            throw new ApiError(httpStatus.NOT_FOUND, "Email or password is incorrect", "Error");
+            throw new ApiError(httpStatus.NOT_FOUND, "رمز عبور یا شماره تلفن نادرست می باشد.", "Error");
 
         const token = await generateJWSToken({
             id: user.id,
-            email: user.email,
-            role: user.role,
+            mobile: user.mobile,
+            nationalId: user.nationalId,
             tokenCreatedAt: new Date(),
             tokenExpireAt: add(new Date(), { seconds: env.tokenExpirationTime }),
         });
 
         const loginDTO = UserMapper.toLoginUserDTO(user, token);
 
-        const tokenDataModel = RedisDataModel.create(loginDTO.token, tokenKeyStructure(user.email));
+        const tokenDataModel = RedisDataModel.create(loginDTO.token, tokenKeyStructure(user.nationalId));
         await redisSet(tokenDataModel);
 
         return loginDTO;
