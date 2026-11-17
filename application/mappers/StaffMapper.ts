@@ -1,5 +1,6 @@
 import { StaffDTO, StaffLoginDTO } from '#application/dto/StaffDTO.ts';
 import Staff from '#domain/models/Staff.ts';
+import { TicketMapper } from '#application/mappers/TicketMapper.ts';
 
 export class StaffMapper {
   /**

@@ -1,5 +1,8 @@
 import {SimpleUserDTO, UserDTO, UserLoginDTO} from "#application/dto/UserDTO.ts";
 import User from "#domain/models/User.ts";
+import { BankAccountMapper } from '#application/mappers/BankAccountMapper.ts';
+import { TicketMapper } from '#application/mappers/TicketMapper.ts';
+import { UserInqueryMapper } from '#application/mappers/UserInqueryMapper.ts';
 
 
 export class UserMapper {
@@ -19,7 +22,7 @@ export class UserMapper {
                   updatedAt: entity.updatedAt,
                   bankAccounts: entity.bankAccounts ? BankAccountMapper.toDTOList(entity.bankAccounts) : [],
                   tickets: entity.tickets ? TicketMapper.toDTOList(entity.tickets) : [],
-                  userInqueries: entity.userInqueries ? UserInqueryMapper.toDTO(entity.userInqueries) : null,
+                  userInqueries: entity.userInqueries ? UserInqueryMapper.toDTO(entity.userInqueries) : undefined,
                 };
         };
         /**
