@@ -12,7 +12,7 @@ export interface TicketDTO {
   updatedAt: Date;
   closedAt?: Date;
   userId: string;
-  staffId: string;
-  user: UserDTO;
+  staffId?: string;
+  user?: UserDTO;
   staff?: StaffDTO;
 }
