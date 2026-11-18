@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import BankAccount from '#models/BankAccount.ts';
 import { createBankAccountCommand } from '#application/types/bankAccount/command.ts';
+import User from '#models/User.ts';
 
 export class BankAccountFactory {
   /**
