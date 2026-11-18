@@ -20,8 +20,8 @@ export class UserMapper {
                   password: entity.password,
                   createdAt: entity.createdAt,
                   updatedAt: entity.updatedAt,
-                  bankAccounts: entity.bankAccounts ? BankAccountMapper.toDTOList(entity.bankAccounts) : [],
-                  tickets: entity.tickets ? TicketMapper.toDTOList(entity.tickets) : [],
+                  bankAccounts: entity.bankAccounts ? BankAccountMapper.toDTOList(entity.bankAccounts) : undefined,
+                  tickets: entity.tickets ? TicketMapper.toDTOList(entity.tickets) : undefined,
                   userInqueries: entity.userInqueries ? UserInqueryMapper.toDTO(entity.userInqueries) : undefined,
                 };
         };
