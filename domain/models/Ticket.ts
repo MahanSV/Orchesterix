@@ -5,8 +5,10 @@ import { TicketStatus } from '#domain/enums/ticket.ts';
 
 export interface TicketConstructorParams {
     id: string;
+    title: string;
     description: string;
     attachment: string;
+    answer?: TicketAnswer;
     status: TicketStatus;
     createdAt: Date;
     updatedAt: Date;
@@ -17,8 +19,10 @@ export interface TicketConstructorParams {
 
 export interface TicketSnapshotParams {
     id: string;
+    title: string;
     description: string;
     attachment: string;
+    answer?: TicketAnswer;
     status: TicketStatus;
     createdAt: Date;
     updatedAt: Date;
@@ -29,9 +33,17 @@ export interface TicketSnapshotParams {
     staff?: StaffSnapshotParams;
 }
 
+export interface TicketAnswer {
+  staffId: string;
+  createdAt: Date;
+  description: string;
+}
+
 class Ticket extends BaseModel {
+    private _title!: string;
     private _description!: string;
     private _attachment!: string;
+    private _answer?: TicketAnswer;
     private _status!: TicketStatus;
     private _createdAt!: Date;
     private _updatedAt!: Date;
@@ -52,8 +64,10 @@ class Ticket extends BaseModel {
             ticket.id = params?.id;
         }
 
+        ticket.title = params.title;
         ticket.description = params.description;
         ticket.attachment = params.attachment;
+        ticket.answer = params.answer;
         ticket.status = params.status;
         ticket.createdAt = params.createdAt;
         ticket.updatedAt = params.updatedAt;
@@ -68,8 +82,10 @@ class Ticket extends BaseModel {
         const ticket = new Ticket();
 
         ticket.id = snapshot.id;
+        ticket.title = snapshot.title;
         ticket.description = snapshot.description;
         ticket.attachment = snapshot.attachment;
+        ticket.answer = snapshot.answer;
         ticket.status = snapshot.status;
         ticket.createdAt = snapshot.createdAt;
         ticket.updatedAt = snapshot.updatedAt;
@@ -80,6 +96,13 @@ class Ticket extends BaseModel {
         ticket.staff = snapshot.staff && Staff.createFromSnapshot(snapshot.staff);
 
         return ticket;
+    };
+
+    public get title() {
+      return this._title;
+    };
+    public set title(value) {
+      this._title = value;
     };
 
     public get description() {
@@ -94,6 +117,13 @@ class Ticket extends BaseModel {
     };
     public set attachment(value) {
         this._attachment = value;
+    };
+
+    public get answer() {
+      return this._answer;
+    };
+    public set answer(value) {
+      this._answer = value;
     };
 
     public get status() {
