@@ -5,16 +5,15 @@ import type { UserRepositoryInterface } from '#domain/interfaces/UserRepository.
 import type {UserServiceInterface} from '#application/interfaces/UserServiceInterface.ts';
 import {UserMapper} from "#application/mappers/UserMapper.ts";
 import {SimpleUserDTO, UserDTO, UserLoginDTO} from "#application/dto/UserDTO.ts";
-import {createUserCommand, loginUserCommand, updateUserCommand} from "#application/types/user/command.ts";
+import {createUserCommand, loginUserCommand} from "#application/types/user/command.ts";
 import {UserFactory} from "#domain/factories/UserFactory.ts";
-import bcrypt from "bcryptjs";
 import {tokenKeyStructure} from "#context/dbContext/redis/redisStrcuture/userStructures.ts";
 import RedisDataModel from "#context/dbContext/redis/dataModel/redisDataModel.ts";
 import {redisSet} from "#context/dbContext/redis/redis.ts";
 import {generateJWSToken} from "#application/services/TokenService.ts";
 import {add} from "date-fns";
 import env from "#substructure/env.ts";
-import { compare } from '#substructure/utils/encryption.js';
+import { compare } from '#substructure/utils/encryption.ts';
 
 export default class UserService implements UserServiceInterface {
     private userRepository: UserRepositoryInterface;

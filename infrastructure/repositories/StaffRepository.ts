@@ -4,7 +4,7 @@ import { StaffRepositoryInterface } from '#domain/interfaces/StaffRepository.ts'
 import prisma from '#context/dbContext/prisma/client.ts';
 import { StaffRole } from '#domain/enums/staff.ts';
 import { staffRole } from '@prisma/client';
-import ApiError from '#webhost/errors/apiError.js';
+import ApiError from '#webhost/errors/apiError.ts';
 import httpStatus from 'http-status';
 
 
