@@ -13,8 +13,8 @@ export class FAQFactory {
       question: command.question,
       answer: command.answer,
       order: Number(command.order),
-      createdAt: command.createdAt || Date.now(),
-      updatedAt: command.updatedAt || Date.now(),
+      createdAt: command.createdAt || new Date(),
+      updatedAt: command.updatedAt || new Date(),
     });
   };
 }
