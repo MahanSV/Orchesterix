@@ -1,6 +1,7 @@
 import express from 'express';
 import userRouter from '#routes/user.ts';
 import staffRouter from '#routes/staff.ts';
+import faqRouter from '#routes/faq.ts';
 
 // @ts-ignore
 const router = express.Router();
@@ -14,6 +15,10 @@ const routes = [
     path: "/staff",
     source: staffRouter
   },
+  {
+    path: "/faqs",
+    source: faqRouter
+  }
 ];
 
 routes.forEach((route) => {
