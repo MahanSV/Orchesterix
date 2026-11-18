@@ -22,10 +22,11 @@ const getUserSchema = z.object({
 });
 
 const updateUserSchema = z.object({
-    id: z.string().optional(),
-    email: z.string().optional(),
-    password: z.string().optional(),
-    role: z.string().optional(),
+  id: z.string(),
+  name: z.string().optional().nullable(),
+  lastName: z.string().optional().nullable(),
+  nationalId: z.string().optional().nullable(),
+  mobile: z.string().optional().nullable(),
 });
 
 const deleteUserSchema = z.object({

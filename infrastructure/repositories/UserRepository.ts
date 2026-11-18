@@ -2,7 +2,6 @@ import prisma from '#context/dbContext/prisma/client.ts';
 import User from '#models/User.ts';
 import type { UserRepositoryInterface } from '#domain/interfaces/UserRepository.ts';
 import {BaseRepository} from "#repositories/BaseRepository.ts";
-import {updateUserCommand} from "#application/types/user/command.ts";
 
 export default class UserRepository extends BaseRepository<User> implements UserRepositoryInterface {
   constructor() {
@@ -60,19 +59,34 @@ export default class UserRepository extends BaseRepository<User> implements User
   
   async createUser(entity: User): Promise<User> {
     const dataModel = await prisma.user.create({
-      data: {
-        id: entity.id,
-        name: entity.name,
-        lastName: entity.lastName,
-        nationalId: entity.nationalId,
-        mobile: entity.mobile,
-        status: entity.status,
-        password: entity.password,
-        createdAt: entity.createdAt,
-        updatedAt: entity.updatedAt,
-      }
+      data: this.createSchemaFromUser(entity)
     });
 
     return dataModel && User.createFromSnapshot(dataModel);
+  };
+
+  async updateUser(entity: User): Promise<User> {
+    const dataModel = await prisma.user.update({
+      where: {
+        id: entity.id,
+      },
+      data: this.createSchemaFromUser(entity)
+    });
+
+    return dataModel && User.createFromSnapshot(dataModel);
+  };
+
+  createSchemaFromUser(entity: User) {
+    return {
+      id: entity.id,
+      name: entity.name,
+      lastName: entity.lastName,
+      nationalId: entity.nationalId,
+      mobile: entity.mobile,
+      status: entity.status,
+      password: entity.password,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
+    }
   };
 }

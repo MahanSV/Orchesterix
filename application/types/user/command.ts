@@ -9,10 +9,11 @@ export type createUserCommand = {
 };
 
 export type updateUserCommand = {
-    id: string;
-    email: string;
-    password: string;
-    role: string;
+  id: string;
+  name?: string;
+  lastName?: string;
+  nationalId?: string;
+  mobile?: string;
 };
 
 export type createCustomerCommand = {

@@ -1,5 +1,4 @@
 import User from "#models/User.ts";
-import {updateUserCommand} from "#application/types/user/command.ts";
 
 export interface UserRepositoryInterface {
     getAllUsersWithInquiries(): Promise<User[]>;
@@ -7,4 +6,5 @@ export interface UserRepositoryInterface {
     getUserById(id: string): Promise<User | null>;
     getUserByNationalIdAndMobile(nationalId: string, mobile: string): Promise<User | null>;
     getUserByMobile(mobile: string): Promise<User | null>;
+    updateUser(entity: User): Promise<User>;
 }

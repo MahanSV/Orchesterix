@@ -85,6 +85,23 @@ class UserController {
 
         res.status(204).send();
     };
+
+    public updateUser = async (req: Request, res: Response): Promise<any> => {
+      const command = {
+        id: req.params.id,
+        name: req.body.name,
+        lastName: req.body.lastName,
+        nationalId: req.body.nationalId,
+        mobile: req.body.mobile,
+      };
+
+      const updatedUser = await this.userService.updateUser(command);
+
+      res.status(httpStatus.OK).send({
+        message: 'کاربر با موفقیت به روزرسانی شد.',
+        updatedUser
+      });
+    }
 }
 
 export default new UserController();

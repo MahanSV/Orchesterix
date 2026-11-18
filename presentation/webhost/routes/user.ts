@@ -2,11 +2,13 @@ import express from 'express';
 import  authenticate from "#middlewares/authenticityMiddlewares/authentication.ts";
 import UserController from '#webhost/controllers/user.ts';
 import {
-    createUserSchema,
-    getUserSchema,
-    simpleUserDTO,
-    userDTOSchema, loginUserSchema, userLoginDTOSchema,
-} from "#webhost/validators/user.ts";
+  createUserSchema,
+  getUserSchema,
+  userDTOSchema,
+  loginUserSchema,
+  userLoginDTOSchema,
+  updateUserSchema,
+} from '#webhost/validators/user.ts';
 import validate from "#middlewares/validation.ts";
 import { createApiRouter } from '#webhost/docs/openApiRouter.ts';
 import { z } from 'zod';
@@ -118,7 +120,7 @@ api.get(
             200: {
                 description: 'Single user',
                 content: {
-                    'application/json': { schema: simpleUserDTO }
+                    'application/json': { schema: userDTOSchema }
                 }
             },
           400: {
@@ -158,6 +160,65 @@ api.get(
     // authenticate,
     validate(getUserSchema),
     UserController.getUser
+);
+
+api.patch(
+  '/',
+  {
+    tags: ['Users'],
+    request: {
+      params: updateUserSchema.pick({ id: true }),
+      body: {
+        description: 'تغییر اطلاعات کاربر.',
+        content: {
+          'application/json': { schema: updateUserSchema.omit({ id: true }) }
+        }
+      }
+    },
+    responses: {
+      200: {
+        description: 'Single user',
+        content: {
+          'application/json': { schema: userDTOSchema }
+        }
+      },
+      400: {
+        description: 'Bad Request',
+        content: {
+          'application/json': {
+            schema: errorSchema
+          }
+        },
+      },
+      401: {
+        description: 'Un// authenticated',
+        content: {
+          'application/json': { schema: errorSchema }
+        }
+      },
+      404: {
+        description: 'Not Found',
+        content: {
+          'application/json': {
+            schema: errorSchema
+          }
+        },
+      },
+      500: {
+        description: 'Internal Server Error',
+        content: {
+          'application/json': {
+            schema: z.object({
+              error: z.string()
+            })
+          }
+        }
+      }
+    }
+  },
+  // authenticate,
+  validate(updateUserSchema),
+  UserController.updateUser
 );
 
 export default router;

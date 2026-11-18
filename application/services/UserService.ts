@@ -5,7 +5,7 @@ import type { UserRepositoryInterface } from '#domain/interfaces/UserRepository.
 import type {UserServiceInterface} from '#application/interfaces/UserServiceInterface.ts';
 import {UserMapper} from "#application/mappers/UserMapper.ts";
 import {UserDTO, UserLoginDTO} from "#application/dto/UserDTO.ts";
-import {createUserCommand, loginUserCommand} from "#application/types/user/command.ts";
+import { createUserCommand, loginUserCommand, updateUserCommand } from '#application/types/user/command.ts';
 import {UserFactory} from "#domain/factories/UserFactory.ts";
 import {tokenKeyStructure} from "#context/dbContext/redis/redisStrcuture/userStructures.ts";
 import RedisDataModel from "#context/dbContext/redis/dataModel/redisDataModel.ts";
@@ -76,5 +76,29 @@ export default class UserService implements UserServiceInterface {
         await redisSet(tokenDataModel);
 
         return loginDTO;
+    };
+
+    async updateUser(command: updateUserCommand): Promise<UserDTO> {
+      const user = await this.userRepository.getUserById(command.id);
+
+      if (!user)
+        throw new ApiError(httpStatus.NOT_FOUND, 'کاربر یافت نشد.', 'Error');
+
+      user.id = command.id || user.id;
+      user.name = command.name || user.name;
+      user.lastName = command.lastName || user.lastName;
+      user.nationalId = command.nationalId || user.nationalId;
+      user.mobile = command.mobile || user.mobile;
+      user.status = command.status || user.status;
+      user.password = command.password || user.password;
+      user.createdAt = command.createdAt || user.createdAt;
+      user.updatedAt = command.updatedAt || user.updatedAt;
+
+      const updatedUser = await this.userRepository.updateUser(user);
+
+      if (!updatedUser)
+        throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'خطا در هنگام به روزرسانی کاربر.', 'Error');
+
+      return UserMapper.toDTO(updatedUser);
     };
 };
