@@ -59,7 +59,7 @@ class BankAccountFacility extends BaseModel {
         bankAccountFacility.updatedAt = snapshot.updatedAt;
         bankAccountFacility.bankAccountId = snapshot.bankAccountId;
         bankAccountFacility.facilityFieldId = snapshot.facilityFieldId;
-        bankAccountFacility.BankAccount = snapshot.bankAccount && BankAccount.createFromSnapshot(snapshot.bankAccount);
+        bankAccountFacility.bankAccount = snapshot.bankAccount && BankAccount.createFromSnapshot(snapshot.bankAccount);
         bankAccountFacility.facilityField = snapshot.facilityField && FacilityField.createFromSnapshot(snapshot.facilityField);
 
         return bankAccountFacility;
