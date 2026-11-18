@@ -23,14 +23,29 @@ export class TicketFactory {
     });
   };
 
-  public static createAnswer(staffId: string, description: string): TicketAnswer {
-    if (description.length <= 2)
-      throw Error('توضیحات باید حداقل 3 کلمه باشد.');
 
-    return {
-      staffId: staffId,
+
+  public static createAnswer(staffId: string, description: string, lastAnswer?: TicketAnswer[]): TicketAnswer[] {
+    if (description.trim().split(/\s+/).length < 3) {
+      throw new Error('توضیحات باید حداقل 3 کلمه باشد.');
+    }
+
+    const result = [...(lastAnswer || [])];
+    let orderNumber = 0;
+
+    for (const item of result) {
+      if (item.order > orderNumber) {
+        orderNumber = item.order;
+      }
+    }
+
+    result.push({
+      staffId,
       createdAt: new Date(),
-      description: description,
-    };
+      description,
+      order: orderNumber + 1,
+    });
+
+    return result;
   };
 }

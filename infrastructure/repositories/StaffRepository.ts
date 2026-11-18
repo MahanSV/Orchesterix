@@ -13,6 +13,14 @@ export default class StaffRepository extends BaseRepository<Staff> implements St
     super(Staff.createFromSnapshot);
   };
 
+  async checkStaffExist(id: string): Promise<Staff | null> {
+    const dataModel = await prisma.staff.findUnique({
+      where: { id },
+    });
+
+    return dataModel && Staff.createFromSnapshot(dataModel);
+  };
+
   async findById(id: string): Promise<Staff | null> {
     const dataModel = await prisma.staff.findUnique({
       where: { id },

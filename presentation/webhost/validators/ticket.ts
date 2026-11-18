@@ -44,7 +44,15 @@ const createTicketByUserSchema = z.object({
   attachment: z.string(),
 });
 
+const ticketAnswerSchema = z.object({
+  id: z.string(),
+  answerDescription: z.string(),
+  staffId: z.string(),
+});
+
+
 export {
   ticketDTOSchema,
   createTicketByUserSchema,
+  ticketAnswerSchema,
 };
