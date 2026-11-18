@@ -7,7 +7,7 @@ export class FacilityCategoryFactory {
   /**
    * Creates a new FacilityCategory entity
    */
-  public static async create(command: createFacilityCategoryCommand): FacilitiesCategory {
+  public static create(command: createFacilityCategoryCommand): FacilitiesCategory {
     // Add any domain logic or validation here before creating the entity
     return FacilitiesCategory.create({
       id : crypto.randomUUID(), // Generate ID if isn't provided
