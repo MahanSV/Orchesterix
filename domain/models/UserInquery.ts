@@ -12,6 +12,17 @@ export interface UserInqueryConstructorParams {
     userId: string;
 }
 
+/**
+ * bankAccount
+ * bankAccountFacility
+ * facilitiesCategory
+ * facilityField
+ * facilityTemplate
+ * FAQ
+ * ticket
+ * userInquery
+ */
+
 export interface UserInquerySnapshotParams {
     id: string;
     point?: string;

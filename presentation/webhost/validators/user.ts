@@ -1,4 +1,11 @@
 import { z } from 'zod';
+import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
+import { bankAccountDTOSchema } from '#webhost/validators/bankAccount.ts';
+import { ticketDTOSchema } from '#webhost/validators/ticket.ts';
+import { userInqueryDTOSchema } from '#webhost/validators/userInquery.ts';
+
+extendZodWithOpenApi(z);
+
 
 const userStatus = z.enum(['Active', 'Inactive']);
 
@@ -34,19 +41,26 @@ const loginUserSchema = z.object({
   password: z.string({ error: "password is required." }).min(1, { error: "password is required." }),
 });
 
-const userType = z.enum(['admin', 'user', 'merchant']);
-
 const userDTOSchema = z.object({
   id: z.string(),
   name: z.string(),
   lastName: z.string(),
   nationalId: z.string(),
   mobile: z.string(),
-  status: z.string(),
+  status: userStatus,
   password: z.string(),
   createdAt: z.date(),
   updatedAt: z.date(),
-});
+  bankAccounts: z.array(z.lazy((): z.ZodType => bankAccountDTOSchema))
+    .nullable()
+    .optional(),
+  tickets: z.array(z.lazy((): z.ZodType => ticketDTOSchema))
+    .nullable()
+    .optional(),
+  userInqueries: z.array(z.lazy((): z.ZodType => userInqueryDTOSchema))
+    .nullable()
+    .optional(),
+}).openapi('userDTOSchema');
 
 const simpleUserDTO = z.object({
   id: z.string(),

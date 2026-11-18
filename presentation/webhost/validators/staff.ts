@@ -1,4 +1,9 @@
 import { z } from 'zod';
+import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
+import { ticketDTOSchema } from '#webhost/validators/ticket.ts';
+
+extendZodWithOpenApi(z);
+
 
 const staffRole = z.enum(['Admin', 'Support', 'Manager']);
 const staffStatus = z.enum(['Active','Inactive']);
@@ -13,7 +18,9 @@ const loginStaffSchema = z.object({
   password: z.string(),
   createdAt: z.date(),
   updatedAt: z.date(),
-  // ticket // TODO: Compelete.
+  ticket: z.lazy((): z.ZodType => ticketDTOSchema)
+    .nullable()
+    .optional(),
 });
 
 const createStaff = z.object({
@@ -31,6 +38,13 @@ const staffDTOSchema = z.object({
   lastName: z.string(),
   nationalId: z.string(),
   role: staffRole,
-});
+  status: staffStatus,
+  password: z.string(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+  ticket: z.lazy((): z.ZodType => ticketDTOSchema)
+    .nullable()
+    .optional(),
+}).openapi('staffDTOSchema');
 
 export { loginStaffSchema, staffDTOSchema, createStaff };
