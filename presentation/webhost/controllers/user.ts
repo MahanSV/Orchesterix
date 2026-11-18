@@ -11,16 +11,6 @@ class UserController {
         this.userService = userService;
     };
 
-    public getAllUsers = async (req: Request, res: Response): Promise<any> => {
-        try {
-            const users = await this.userService.getAllUsers();
-
-            res.json(users);
-        } catch (error) {
-            throw error;
-        }
-    };
-
     public createUser = async (req: Request, res: Response): Promise<any> => {
         try {
             const command = {
@@ -43,13 +33,15 @@ class UserController {
     };
 
     public getUser = async (req: Request, res: Response): Promise<any> => {
-        /*const { id } = req.params;*/
         try {
             const id = req.params.id;
 
             const user = await this.userService.getUser(id);
 
-            res.json(user);
+          res.status(httpStatus.OK).send({
+            message: 'کاربر با موفقیت دریافت شد.',
+            user
+          });
         } catch (error) {
             throw error;
         }
@@ -80,11 +72,6 @@ class UserController {
         } catch (error) {
             throw error;
         }
-    };
-
-    public getCurrentUser = async (req: Request, res: Response): Promise<any> => {
-        const { id, email, role } = (req as any).tokenData;
-        res.json({ id, email, role });
     };
 
     public logoutUser = async (_req: Request, res: Response): Promise<any> => {

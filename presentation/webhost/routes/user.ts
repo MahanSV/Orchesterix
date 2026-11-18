@@ -1,12 +1,9 @@
 import express from 'express';
-import authenticate from "#middlewares/authenticityMiddlewares/authentication.ts";
+import  authenticate from "#middlewares/authenticityMiddlewares/authentication.ts";
 import UserController from '#webhost/controllers/user.ts';
 import {
     createUserSchema,
-    deleteUserSchema,
-    getUserByEmailSchema,
     getUserSchema,
-    updateUserSchema,
     simpleUserDTO,
     userDTOSchema, loginUserSchema, userLoginDTOSchema,
 } from "#webhost/validators/user.ts";
@@ -38,7 +35,7 @@ api.post(
             }
         }
     },
-    authenticate,
+    // authenticate,
     validate(createUserSchema),
     UserController.createUser
 );
@@ -70,7 +67,7 @@ api.post(
             },
           },
           401: {
-            description: 'Unauthenticated',
+            description: 'Un// authenticated',
             content: {
               'application/json': { schema: errorSchema }
             }
@@ -133,7 +130,7 @@ api.get(
             },
           },
           401: {
-            description: 'Unauthenticated',
+            description: 'Un// authenticated',
             content: {
               'application/json': { schema: errorSchema }
             }
@@ -158,7 +155,7 @@ api.get(
           }
         }
     },
-    authenticate,
+    // authenticate,
     validate(getUserSchema),
     UserController.getUser
 );

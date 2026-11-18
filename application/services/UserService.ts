@@ -4,7 +4,7 @@ import UserRepository from '#repositories/UserRepository.ts';
 import type { UserRepositoryInterface } from '#domain/interfaces/UserRepository.ts';
 import type {UserServiceInterface} from '#application/interfaces/UserServiceInterface.ts';
 import {UserMapper} from "#application/mappers/UserMapper.ts";
-import {SimpleUserDTO, UserDTO, UserLoginDTO} from "#application/dto/UserDTO.ts";
+import {UserDTO, UserLoginDTO} from "#application/dto/UserDTO.ts";
 import {createUserCommand, loginUserCommand} from "#application/types/user/command.ts";
 import {UserFactory} from "#domain/factories/UserFactory.ts";
 import {tokenKeyStructure} from "#context/dbContext/redis/redisStrcuture/userStructures.ts";
@@ -40,12 +40,12 @@ export default class UserService implements UserServiceInterface {
         return UserMapper.toDTO(userEntity);
     };
 
-    async getUser(id: string): Promise<SimpleUserDTO> {
+    async getUser(id: string): Promise<UserDTO> {
         const user = await this.userRepository.getUserById(id);
 
         if (!user) throw new ApiError(httpStatus.NOT_FOUND, "Failed to get user.", "Error");
 
-        return UserMapper.toSimpleUserDTO(user);
+        return UserMapper.toDTO(user);
     };
 
     async loginUser(command: loginUserCommand): Promise<UserLoginDTO> {
