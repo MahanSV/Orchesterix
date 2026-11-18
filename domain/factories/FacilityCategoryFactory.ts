@@ -14,8 +14,8 @@ export class FacilityCategoryFactory {
       name: command.name,
       key: command.key,
       order: command.order || 1,
-      createdAt: command.createdAt || Date.now(),
-      updatedAt: command.updatedAt || Date.now(),
+      createdAt: command.createdAt || new Date(),
+      updatedAt: command.updatedAt || new Date(),
     });
   };
 }

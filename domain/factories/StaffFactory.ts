@@ -17,8 +17,8 @@ export class StaffFactory {
       role: command.role || StaffRole.support,
       status: StaffStatus.active,
       password: encrypt(command.password),
-      createdAt: command.createdAt || Date.now(),
-      updatedAt: command.updatedAt || Date.now(),
+      createdAt: command.createdAt || new Date(),
+      updatedAt: command.updatedAt || new Date(),
     });
   };
 }

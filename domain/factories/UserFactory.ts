@@ -18,8 +18,8 @@ export class UserFactory {
       mobile: command.mobile,
       status: command.status || userStatus.active,
       password: encrypt(command.password),
-      createdAt: command.createdAt || Date.now(),
-      updatedAt: command.updatedAt || Date.now(),
+      createdAt: command.createdAt || new Date(),
+      updatedAt: command.updatedAt || new Date(),
     });
   }
 }

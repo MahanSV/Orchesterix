@@ -12,8 +12,8 @@ export class UserInqueryFactory {
       point: command.point ? command.point : undefined,
       guarantees: command.guarantees,
       totalTurnover: command.totalTurnover,
-      createdAt: command.createdAt || Date.now(),
-      updatedAt: command.updatedAt || Date.now(),
+      createdAt: command.createdAt || new Date(),
+      updatedAt: command.updatedAt || new Date(),
       userId: command.userId,
     });
   };

@@ -14,8 +14,8 @@ export class FacilityTemplateFactory {
       value: command.value,
       key: command.key,
       order: command.order,
-      createdAt: command.createdAt || Date.now(),
-      updatedAt: command.updatedAt || Date.now(),
+      createdAt: command.createdAt || new Date(),
+      updatedAt: command.updatedAt || new Date(),
       facilitiesCategoryId: command.facilitiesCategoryId,
     });
   };
