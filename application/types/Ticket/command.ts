@@ -15,12 +15,12 @@ export type changeTitleAndDescriptionCommand = {
 
 
 export type ticketFiltersQuery = {
-  status: TicketStatus;
-  search: string;
+  status?: TicketStatus;
+  search?: string;
   page: number;
   limit: number;
-  sortOrder: string;
-}
+  sortOrder: 'asc' | 'desc';
+};
 
 export type changeTicketStatusCommand = {
   id: string;
