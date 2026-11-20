@@ -11,8 +11,10 @@ export class TicketMapper {
   public static toDTO(entity: Ticket): TicketDTO {
     return {
       id: entity.id,
+      title: entity.title,
       description: entity.description,
-      attachment: entity.attachment,
+      attachment: entity.attachment ?? undefined,
+      answer: entity.answer ? entity.answer : undefined,
       status: entity.status,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,

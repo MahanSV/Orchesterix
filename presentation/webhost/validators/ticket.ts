@@ -18,7 +18,9 @@ const ticketDTOSchema = z.object({
   id: z.string(),
   title: z.string(),
   description: z.string(),
-  attachment: z.string(),
+  attachment: z.string()
+    .nullable()
+    .optional(),
   answer: ticketAnswer
     .nullable()
     .optional(),
@@ -41,7 +43,9 @@ const ticketDTOSchema = z.object({
 const createTicketByUserSchema = z.object({
   title: z.string(),
   description: z.string(),
-  attachment: z.string(),
+  attachment: z.string()
+    .nullable()
+    .optional(),
 });
 
 const ticketAnswerSchema = z.object({
@@ -50,9 +54,29 @@ const ticketAnswerSchema = z.object({
   staffId: z.string(),
 });
 
+const changeTitleAndDescriptionSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  description: z.string(),
+});
+
+const deleteTicketSchema = z.object({
+  id: z.string(),
+});
+
+const getAllTicketsWithFilterSchema = z.object({});
+
+const changeTicketStatusSchema = z.object({
+  id: z.string(),
+  status: ticketStatus
+});
 
 export {
   ticketDTOSchema,
   createTicketByUserSchema,
   ticketAnswerSchema,
+  changeTitleAndDescriptionSchema,
+  deleteTicketSchema,
+  getAllTicketsWithFilterSchema,
+  changeTicketStatusSchema,
 };

@@ -2,7 +2,7 @@ model Ticket {
   id          String       @unique
   title       String
   description String
-  attachment  String
+  attachment  String?
   answer      Json?
   status      ticketStatus
   createdAt   DateTime     @default(now())

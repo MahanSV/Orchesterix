@@ -8,8 +8,8 @@ export interface TicketDTO {
   id: string;
   title: string;
   description: string;
-  attachment: string;
-  answer?: TicketAnswer;
+  attachment?: string;
+  answer?: TicketAnswer[];
   status: TicketStatus;
   createdAt: Date;
   updatedAt: Date;

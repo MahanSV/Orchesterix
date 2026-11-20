@@ -95,8 +95,10 @@ CREATE TABLE "Staff" (
 -- CreateTable
 CREATE TABLE "Ticket" (
     "id" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
-    "attachment" TEXT NOT NULL,
+    "attachment" TEXT,
+    "answer" JSONB,
     "status" "ticketStatus" NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,

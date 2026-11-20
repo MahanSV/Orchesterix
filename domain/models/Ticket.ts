@@ -7,7 +7,7 @@ export interface TicketConstructorParams {
     id: string;
     title: string;
     description: string;
-    attachment: string;
+    attachment?: string;
     answer?: TicketAnswer[];
     status: TicketStatus;
     createdAt: Date;
@@ -21,7 +21,7 @@ export interface TicketSnapshotParams {
     id: string;
     title: string;
     description: string;
-    attachment: string;
+    attachment?: string;
     answer?: TicketAnswer[];
     status: TicketStatus;
     createdAt: Date;
@@ -43,7 +43,7 @@ export interface TicketAnswer {
 class Ticket extends BaseModel {
     private _title!: string;
     private _description!: string;
-    private _attachment!: string;
+    private _attachment?: string;
     private _answer?: TicketAnswer[];
     private _status!: TicketStatus;
     private _createdAt!: Date;
