@@ -14,7 +14,8 @@
     "typecheck": "tsc --noEmit",
     "test": "jest",
     "prisma:generate": "prisma generate",
-    "prisma:clean": "pm2 kill && rimraf node_modules/.prisma && npx prisma generate"
+    "prisma:clean": "pm2 kill && rimraf node_modules/.prisma && npx prisma generate",
+    "start:mock": "pm2-dev mock/app.ts -i max"
   },
   "keywords": [],
   "author": "",
