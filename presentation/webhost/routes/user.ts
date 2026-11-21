@@ -69,7 +69,7 @@ api.post(
             },
           },
           401: {
-            description: 'Un// authenticated',
+            description: 'Unauthorized',
             content: {
               'application/json': { schema: errorSchema }
             }
@@ -132,7 +132,7 @@ api.get(
             },
           },
           401: {
-            description: 'Un// authenticated',
+            description: 'Unauthorized',
             content: {
               'application/json': { schema: errorSchema }
             }
@@ -191,7 +191,7 @@ api.patch(
         },
       },
       401: {
-        description: 'Un// authenticated',
+        description: 'Unauthorized',
         content: {
           'application/json': { schema: errorSchema }
         }
