@@ -1,7 +1,6 @@
 import crypto from "crypto";
 import BankAccount from '#models/BankAccount.ts';
 import { createBankAccountCommand } from '#application/types/bankAccount/command.ts';
-import User from '#models/User.ts';
 
 export class BankAccountFactory {
   /**
@@ -9,7 +8,7 @@ export class BankAccountFactory {
    */
   public static create(command: createBankAccountCommand): BankAccount {
     // Add any domain logic or validation here before creating the entity
-    return User.create({
+    return BankAccount.create({
       id : crypto.randomUUID(), // Generate ID if isn't provided
       accountHolderName: command.accountHolderName,
       shebaId: command.shebaId,
