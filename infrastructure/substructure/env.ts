@@ -28,7 +28,10 @@ const envSchema = z.object({
 	CORS_LOCAL_FRONTEND: z.string().min(1),
 	CORS_DEV_FRONTEND: z.string().min(1),
 	PRODUCT_DELIVERY_DAYS: z.coerce.number(),
+	MOCK_PORT: z.string().min(1),
 	API_DOC_BASE_PATH: z.string().default('http://localhost:3001'),
+	BULLMQ_USERNAME: z.string(),
+	BULLMQ_PASSWORD: z.string(),
 });
 
 const value: any = zodValidateSync(process.env, envSchema, {}, 'Env Validation: ');
@@ -48,5 +51,8 @@ export default {
 	corsLocalFrontend: value.CORS_LOCAL_FRONTEND,
 	corsDevFrontend: value.CORS_DEV_FRONTEND,
 	productDeliveryDays: value.PRODUCT_DELIVERY_DAYS,
+	mockPort: value.MOCK_PORT,
 	apiDocBasePath:  value.API_DOC_BASE_PATH,
+	bullMQUsername: value.BULLMQ_USERNAME,
+	bullMQPassword: value.BULLMQ_PASSWORD,
 };

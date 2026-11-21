@@ -15,11 +15,24 @@ import xssSanitizer from '#middlewares/xssSanitizer.ts';
 import normalizeMiddleware from '#middlewares/normalizeMiddleware.ts';
 import {generateOpenApiDocument} from "#webhost/docs/openapiRegistry.ts";
 import swaggerUi from 'swagger-ui-express';
+import queueManager from '#context/bullMQ/queueManager.ts';
+import { setupWorkers } from '#context/bullMQ/workerBatch.ts';
+import { basicAuth, initializeBullBoard } from '#context/bullMQ/bullBoard.ts';
 
 const app = express();
 
 const openApiDocument = generateOpenApiDocument();
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(openApiDocument));
+
+/**
+ * BullMQ
+ */
+// Queue and workers
+await queueManager.initialize();
+await setupWorkers();
+// Route
+const dashboardRouter = initializeBullBoard();
+app.use('/admin/queues', basicAuth, dashboardRouter.getRouter());
 
 // Set Content-Type and override res.json for bigint and status
 app.use((req, res, next) => {
