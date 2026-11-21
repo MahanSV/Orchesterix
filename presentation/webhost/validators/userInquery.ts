@@ -18,6 +18,16 @@ const userInqueryDTOSchema = z.object({
     .optional(),
 }).openapi('userInqueryDTOSchema');
 
+const getUserInqueryByIdSchema = z.object({
+  id: z.string(),
+});
+
+const createInqueryFromWebServiceSchema = z.object({
+  userId: z.string(),
+})
+
 export {
   userInqueryDTOSchema,
+  getUserInqueryByIdSchema,
+  createInqueryFromWebServiceSchema,
 };
