@@ -8,6 +8,19 @@ export default class UserRepository extends BaseRepository<User> implements User
     super(User.createFromSnapshot);
   };
 
+
+  async getAllUsers(): Promise<User[]> {
+    const dataModels = await prisma.user.findMany({
+      include: {
+        bankAccounts: true,
+        tickets: true,
+        userInqueries: true,
+      }
+    });
+
+    return dataModels.map(data => User.createFromSnapshot(data));
+  }
+
   async getAllUsersWithInquiries(): Promise<User[]> {
     const dataModel = await prisma.user.findMany({
       where: {
