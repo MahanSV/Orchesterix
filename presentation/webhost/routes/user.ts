@@ -17,6 +17,23 @@ import {errorSchema} from "#webhost/validators/errorSchema.ts";
 const router = express.Router();
 const api = createApiRouter(router, '/users');
 
+api.get(
+  '/',
+  {
+    tags: ['Users'],
+    responses: {
+      200: {
+        description: 'List of all users',
+        content: {
+          'application/json': { schema: z.array(userDTOSchema) }
+        }
+      }
+    }
+  },
+  // authenticate,
+  UserController.getAllUsers
+)
+
 api.post(
     '/',
     {

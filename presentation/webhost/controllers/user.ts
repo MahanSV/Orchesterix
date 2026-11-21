@@ -11,6 +11,20 @@ class UserController {
         this.userService = userService;
     };
 
+  public getAllUsers = async (req: Request, res: Response): Promise<any> => {
+    try {
+
+      const users = await this.userService.getAllUsers();
+
+      res.status(httpStatus.OK).send({
+        message: 'لیست کاربران با موفقیت دریافت شد.',
+        users
+      });
+    } catch (error) {
+      throw error;
+    }
+  };
+
     public createUser = async (req: Request, res: Response): Promise<any> => {
         try {
             const command = {

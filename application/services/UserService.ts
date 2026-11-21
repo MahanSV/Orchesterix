@@ -22,6 +22,12 @@ export default class UserService implements UserServiceInterface {
         this.userRepository = userRepository;
     };
 
+    async getAllUsers(): Promise<UserDTO[]> {
+      const allUsers = await this.userRepository.getAllUsers();
+
+      return allUsers.length > 0 ? UserMapper.toDTOList(allUsers) : [];
+    };
+
     async createUser(command: createUserCommand): Promise<UserDTO> {
         const existingUser = await this.userRepository.getUserByNationalIdAndMobile(
           command.nationalId, command.mobile
