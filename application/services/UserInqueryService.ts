@@ -2,11 +2,12 @@ import { UserInqueryServiceInterface } from '#application/interfaces/UserInquery
 import { UserInqueryRepositoryInterface } from '#domain/interfaces/UserInqueryRepository.ts';
 import UserInqueryRepository from '#repositories/UserInqueryRepository.ts';
 import { UserInqueryDTO } from '#application/dto/UserInqueryDTO.ts';
-import ApiError from '#webhost/errors/apiError.js';
+import ApiError from '#webhost/errors/apiError.ts';
 import httpStatus from 'http-status';
 import { UserInqueryMapper } from '#application/mappers/UserInqueryMapper.ts';
 import type { UserRepositoryInterface } from '#domain/interfaces/UserRepository.ts';
 import UserRepository from '#repositories/UserRepository.ts';
+import queueManager from '#context/bullMQ/queueManager.ts';
 
 
 export default class UserInqueryService implements UserInqueryServiceInterface {
@@ -30,11 +31,13 @@ export default class UserInqueryService implements UserInqueryServiceInterface {
     return UserInqueryMapper.toDTO(userInquery);
   };
 
-  async createInqueryFromWebService(id: string): Promise<boolean> {
-    const user = await this.userRepository.getUserById(id);
+  async createInqueryFromWebService(userId: string): Promise<boolean> {
+    const user = await this.userRepository.getUserById(userId);
 
     if (!user)
       throw new ApiError(httpStatus.BAD_REQUEST, 'کاربر یافت نشد.', 'Error');
+
+    await queueManager.addJob("Bank-Accounts", user.nationalId);
 
     return true;
   };

@@ -123,7 +123,7 @@ api.post(
   },
   // authenticate,
   validate(createInqueryFromWebServiceSchema),
-  UserInqueryController.getUserInqueryById
+  UserInqueryController.createInqueryFromWebService
 );
 
 export default router;

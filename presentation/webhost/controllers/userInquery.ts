@@ -26,7 +26,7 @@ class UserInqueryController {
   };
 
   public createInqueryFromWebService = async (req: Request, res: Response): Promise<any> => {
-    const userId = req.body.id;
+    const userId = req.body.userId;
 
     const userInquery = await this.userInqueryService.createInqueryFromWebService(userId);
 
