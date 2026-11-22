@@ -94,17 +94,19 @@ class AccountActivityWorker {
 
     let totalTurnover: number = 0;
 
-    const result = user.bankAccounts?.map(async (bankAccount) => {
-        const shebaId = bankAccount.shebaId;
+    const result = await Promise.all(
+      user.bankAccounts?.map(async (bankAccount) => {
+         const shebaId = bankAccount.shebaId;
 
-        const userAccountActivity = await this.executeAccountActivitiesWebService(shebaId);
+         const userAccountActivity = await this.executeAccountActivitiesWebService(shebaId);
 
-        totalTurnover+=userAccountActivity.data.accountActivity;
+         totalTurnover+=userAccountActivity.data.accountActivity;
 
-        const amount = String(userAccountActivity.data.accountActivity);
+         const amount = String(userAccountActivity.data.accountActivity);
 
-        return await this.saveBankAccountActivity(bankAccount.id, amount);
-    });
+         return await this.saveBankAccountActivity(bankAccount.id, amount);
+      })
+    );
 
     await this.createUserInqueryTurnover(user.id, totalTurnover);
 
