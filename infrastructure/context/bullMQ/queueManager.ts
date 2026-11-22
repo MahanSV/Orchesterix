@@ -77,6 +77,14 @@ class QueueManager {
 
             // دریافت حساب های بانکی کاربر
             await this.createQueue("Bank-Accounts");
+            // دریافت گردش حساب
+            await this.createQueue("Account-Activity");
+            // دریافت ضمانتنامه
+            await this.createQueue("Guarantee");
+            // دریافت وام
+            await this.createQueue("Loan");
+            // دریافت امتیازات
+            await this.createQueue("Point");
 
             console.log("Queue Manager initialized successfully");
         } catch (error) {
