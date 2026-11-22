@@ -1,9 +1,9 @@
 import { Worker } from 'bullmq';
 import type { Job } from 'bullmq';
-
 import { connection } from '#context/bullMQ/queueManager.ts';
 import { bankAccountWorkerProcessor } from '#context/bullMQ/workers/bankAccountsWorker.ts';
 import { AccountActivityWorkerProcessor } from '#context/bullMQ/workers/acountActivityWorker.ts';
+import { guaranteeWorkerProcessor } from '#context/bullMQ/workers/guaranteeWorker.ts';
 
 type ProcessorHandler = (job: Job) => Promise<unknown>;
 
@@ -24,6 +24,11 @@ export async function setupWorkers(): Promise<void> {
       handler: async (job) =>
         await AccountActivityWorkerProcessor(job.data.nationalId),
     },
+    {
+      queueName: 'Guarantee',
+      handler: async (job) =>
+        await guaranteeWorkerProcessor(job.data.nationalId),
+    }
   ];
 
   for (const { queueName, handler } of processors) {
@@ -35,10 +40,22 @@ export async function setupWorkers(): Promise<void> {
         try {
           const result = await handler(job);
 
-          const serializedResult =
-            JSON.stringify(result, null, 2) ?? String(result);
+          if (queueName === 'Guarantee') {
+            const serializedResult = JSON.stringify(
+              result,
+              (_, value) =>
+                typeof value === 'bigint' ? value.toString() : value,
+              2
+            );
 
-          await job.log(serializedResult);
+            await job.log(serializedResult ?? String(result));
+          }
+          else {
+            const serializedResult =
+              JSON.stringify(result, null, 2) ?? String(result);
+
+            await job.log(serializedResult);
+          }
 
           console.log(`✅ Finished ${queueName}.`);
         } catch (error: unknown) {
