@@ -32,7 +32,7 @@ class BankAccountsWorker {
     });
   };
 
-  async getBankAccounts(): Promise<BankAccountWebServiceData[]> {
+  async getBankAccounts(): Promise<{ message: string, data: BankAccountWebServiceData[] }> {
     const response = await this.axiosInstance.get('/banAccounts');
 
     return response.data;
