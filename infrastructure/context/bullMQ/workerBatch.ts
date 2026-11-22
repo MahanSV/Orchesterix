@@ -4,6 +4,8 @@ import { connection } from '#context/bullMQ/queueManager.ts';
 import { bankAccountWorkerProcessor } from '#context/bullMQ/workers/bankAccountsWorker.ts';
 import { AccountActivityWorkerProcessor } from '#context/bullMQ/workers/acountActivityWorker.ts';
 import { guaranteeWorkerProcessor } from '#context/bullMQ/workers/guaranteeWorker.ts';
+import { loanWorkerProcessor } from '#context/bullMQ/workers/LoanWorker.ts';
+import { PointWorkerProcessor } from '#context/bullMQ/workers/PointWorker.ts';
 
 type ProcessorHandler = (job: Job) => Promise<unknown>;
 
@@ -14,6 +16,7 @@ type Processor = {
 
 export async function setupWorkers(): Promise<void> {
   const processors: Processor[] = [
+    // Test ✅
     {
       queueName: 'Bank-Accounts',
       handler: async (job) =>
@@ -24,10 +27,21 @@ export async function setupWorkers(): Promise<void> {
       handler: async (job) =>
         await AccountActivityWorkerProcessor(job.data.nationalId),
     },
+    // Test ✅
     {
       queueName: 'Guarantee',
       handler: async (job) =>
         await guaranteeWorkerProcessor(job.data.nationalId),
+    },
+    {
+      queueName: 'Loan',
+      handler: async (job) =>
+        await loanWorkerProcessor(job.data.nationalId),
+    },
+    {
+      queueName: 'Point',
+      handler: async (job) =>
+        await PointWorkerProcessor(job.data.nationalId),
     }
   ];
 
