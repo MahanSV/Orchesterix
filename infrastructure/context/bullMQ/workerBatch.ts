@@ -2,7 +2,7 @@ import { Worker } from 'bullmq';
 import type { Job } from 'bullmq';
 
 import { connection } from '#context/bullMQ/queueManager.ts';
-import { bankAccountWorkerProcessor } from '#context/bullMQ/workers/bankAccounts.ts';
+import { bankAccountWorkerProcessor } from '#context/bullMQ/workers/bankAccountsWorker.ts';
 import { AccountActivityWorkerProcessor } from '#context/bullMQ/workers/acountActivityWorker.ts';
 
 type ProcessorHandler = (job: Job) => Promise<unknown>;
