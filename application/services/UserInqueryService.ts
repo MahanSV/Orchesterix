@@ -32,7 +32,6 @@ export default class UserInqueryService implements UserInqueryServiceInterface {
   };
 
   async createInqueryFromWebService(userId: string): Promise<void> {
-    console.log("UserID: " + userId);
     const user = await this.userRepository.getUserById(userId);
 
     if (!user)
@@ -40,7 +39,7 @@ export default class UserInqueryService implements UserInqueryServiceInterface {
 
     console.log("User: " + JSON.stringify(user, null, 2));
 
-    await queueManager.addJob("Account-Activity", {
+    await queueManager.addJob("Bank-Accounts", {
       nationalId: user.nationalId,
     });
   };
