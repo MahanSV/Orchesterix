@@ -22,7 +22,7 @@ export async function setupWorkers(): Promise<void> {
       handler: async (job) =>
         await bankAccountWorkerProcessor(job.data.nationalId),
     },
-    {
+    { // No needed anymore
       queueName: 'Account-Activity',
       handler: async (job) =>
         await AccountActivityWorkerProcessor(job.data.nationalId),
