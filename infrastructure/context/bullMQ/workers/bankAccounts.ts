@@ -5,6 +5,7 @@ import { BankAccountFactory } from '#domain/factories/BankAccountFactory.ts';
 import { BankAccountStatus, bankAccountType } from '#domain/enums/bankAccount.ts';
 import { createBankAccountCommand } from '#application/types/bankAccount/command.ts';
 import BankAccount from '#models/BankAccount.ts';
+import User from '#models/User.ts';
 
 type BankAccountWebServiceData = {
   fullName: string;
@@ -55,10 +56,23 @@ class BankAccountsWorker {
     return typeValue as bankAccountType;
   };
 
-  async saveBankAccountData(userId: string): Promise<BankAccount[]> {
-    const data = await this.getBankAccounts();
+  async getUserByNationalId(nationalId: string): Promise<User | null> {
+    const dataModel = await prisma.user.findUnique({
+      where: {
+        nationalId
+      }
+    });
 
-    console.log("Parameter: ", userId);
+    return dataModel && User.createFromSnapshot(dataModel);
+  };
+
+  async saveBankAccountData(nationalId: string): Promise<BankAccount[]> {
+    const user = await this.getUserByNationalId(nationalId);
+
+    if (!user)
+      throw Error(`User not found: ${nationalId}`);
+
+    const data = await this.getBankAccounts();
 
     const bankAccountEntities = data?.data?.map(bankAccount => {
       const command: createBankAccountCommand = {
@@ -71,10 +85,8 @@ class BankAccountsWorker {
         type: this.typeValidation(bankAccount.type),
         status: this.statusValidation(bankAccount.status),
         score: bankAccount.score,
-        userId: userId,
+        userId: user.id,
       };
-
-      console.log("Command: ", command);
 
       const bankAccountEntity = BankAccountFactory.create(command);
 
@@ -89,15 +101,15 @@ class BankAccountsWorker {
         type: bankAccountEntity.type,
         status: bankAccountEntity.status,
         score: String(bankAccountEntity.score),
-        userId: userId,
+        userId: user.id,
       };
     });
 
-    const dataModel = await prisma.bankAccount.createMany({
+    const dataModel = await prisma.bankAccount.createManyAndReturn({
       data: bankAccountEntities,
     });
 
-    return dataModel && BankAccount.createFromSnapshot(dataModel);
+    return dataModel.map(data => BankAccount.createFromSnapshot(data));
   };
 }
 
