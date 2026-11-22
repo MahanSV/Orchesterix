@@ -2,7 +2,7 @@
 
 export type createUserInqueryCommand = {
   point?: string;
-  guarantees: any;
+  guarantees?: any;
   totalTurnover: number;
   userId: string;
 };
