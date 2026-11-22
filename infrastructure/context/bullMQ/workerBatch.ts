@@ -16,7 +16,7 @@ export async function setupWorkers(): Promise<void> {
     {
       queueName: 'Bank-Accounts',
       handler: async (job) =>
-        await bankAccountWorkerProcessor(job.data.userId),
+        await bankAccountWorkerProcessor(job.data.nationalId),
     },
   ];
 

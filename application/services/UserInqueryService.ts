@@ -38,7 +38,7 @@ export default class UserInqueryService implements UserInqueryServiceInterface {
       throw new ApiError(httpStatus.BAD_REQUEST, 'کاربر یافت نشد.', 'Error');
 
     await queueManager.addJob("Bank-Accounts", {
-      userId: user.nationalId,
+      nationalId: user.nationalId,
     });
   };
 }

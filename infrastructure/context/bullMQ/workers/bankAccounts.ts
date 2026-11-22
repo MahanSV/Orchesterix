@@ -113,8 +113,8 @@ class BankAccountsWorker {
   };
 }
 
-export async function bankAccountWorkerProcessor(userId: string): Promise<BankAccount[]> {
+export async function bankAccountWorkerProcessor(nationalId: string): Promise<BankAccount[]> {
   const bankAccountWorker = new BankAccountsWorker();
 
-  return await bankAccountWorker.saveBankAccountData(userId);
+  return await bankAccountWorker.saveBankAccountData(nationalId);
 }
