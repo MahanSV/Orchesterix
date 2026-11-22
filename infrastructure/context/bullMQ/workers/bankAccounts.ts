@@ -84,7 +84,7 @@ class BankAccountsWorker {
         turnover: bankAccount.turnover,
         type: this.typeValidation(bankAccount.type),
         status: this.statusValidation(bankAccount.status),
-        score: bankAccount.score,
+        score: String(bankAccount.score),
         userId: user.id,
       };
 
