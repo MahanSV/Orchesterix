@@ -31,7 +31,7 @@ export default class UserInqueryService implements UserInqueryServiceInterface {
     return UserInqueryMapper.toDTO(userInquery);
   };
 
-  async createInqueryFromWebService(userId: string): Promise<boolean> {
+  async createInqueryFromWebService(userId: string): Promise<void> {
     const user = await this.userRepository.getUserById(userId);
 
     if (!user)
@@ -40,7 +40,5 @@ export default class UserInqueryService implements UserInqueryServiceInterface {
     await queueManager.addJob("Bank-Accounts", {
       userId: user.nationalId,
     });
-
-    return true;
   };
 }
