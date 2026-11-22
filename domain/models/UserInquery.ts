@@ -31,7 +31,7 @@ export interface UserInquerySnapshotParams {
     createdAt: Date;
     updatedAt: Date;
     userId: string;
-    user: UserSnapshotParams;
+    user?: UserSnapshotParams;
 }
 
 class UserInquery extends BaseModel {
@@ -41,7 +41,7 @@ class UserInquery extends BaseModel {
     private _createdAt!: Date;
     private _updatedAt!: Date;
     private _userId!: string;
-    private _user!: User;
+    private _user?: User;
 
     constructor() {
         super();
@@ -74,7 +74,7 @@ class UserInquery extends BaseModel {
         userInquery.createdAt = snapshot.createdAt;
         userInquery.updatedAt = snapshot.updatedAt;
         userInquery.userId = snapshot.userId;
-        userInquery.user = User.createFromSnapshot(snapshot.user);
+        userInquery.user = snapshot.user ? User.createFromSnapshot(snapshot.user) : undefined;
 
         return userInquery;
     };
