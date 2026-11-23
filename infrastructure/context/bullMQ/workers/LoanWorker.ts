@@ -10,7 +10,7 @@ export type LoanWorkerWebServiceResponse = {
     loanNumber: string;
     borrower: string;
     bankName: string;
-    loanType: string;
+    loanType: 'PERSONAL' | 'HOME' | 'BUSINESS' | 'AUTO';
     principal: number;
     interestRate: number;
     termMonths: number;
@@ -19,7 +19,7 @@ export type LoanWorkerWebServiceResponse = {
     remainingBalance: number;
     issueDate: Date;
     maturityDate: Date;
-    status: string;
+    status: 'ACTIVE' | 'PAID' | 'OVERDUE' | 'DEFAULTED' | 'PENDING';
   }[]
 };
 
