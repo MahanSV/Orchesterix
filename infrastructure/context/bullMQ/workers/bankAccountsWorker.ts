@@ -74,42 +74,58 @@ class BankAccountsWorker {
 
     const data = await this.getBankAccounts();
 
-    const bankAccountEntities = data?.data?.map(bankAccount => {
-      const command: createBankAccountCommand = {
-        accountHolderName: bankAccount.fullName,
-        shebaId: bankAccount.sheba,
-        cardNumber: bankAccount.cardNumber,
-        branchCode: bankAccount.branchCode,
-        branchName: bankAccount.branchName,
-        turnover: bankAccount.turnover,
-        type: this.typeValidation(bankAccount.type),
-        status: this.statusValidation(bankAccount.status),
-        score: String(bankAccount.score),
-        userId: user.id,
-      };
+     return await Promise.all(
+       data?.data?.map(async (bankAccount) => {
+         const command: createBankAccountCommand = {
+           accountHolderName: bankAccount.fullName,
+           shebaId: bankAccount.sheba,
+           cardNumber: bankAccount.cardNumber,
+           branchCode: bankAccount.branchCode,
+           branchName: bankAccount.branchName,
+           turnover: bankAccount.turnover,
+           type: this.typeValidation(bankAccount.type),
+           status: this.statusValidation(bankAccount.status),
+           score: String(bankAccount.score),
+           userId: user.id,
+         };
 
-      const bankAccountEntity = BankAccountFactory.create(command);
+         const bankAccountEntity = BankAccountFactory.create(command);
 
-      return {
-        id: bankAccountEntity.id,
-        accountHolderName: bankAccountEntity.accountHolderName,
-        shebaId: bankAccountEntity.shebaId,
-        cardNumber: bankAccountEntity.cardNumber,
-        branchCode: bankAccountEntity.branchCode,
-        branchName: bankAccountEntity.branchName,
-        turnover: bankAccountEntity.turnover,
-        type: bankAccountEntity.type,
-        status: bankAccountEntity.status,
-        score: String(bankAccountEntity.score),
-        userId: user.id,
-      };
-    });
+         const dataModel = await prisma.bankAccount.upsert({
+           where: {
+             shebaId: bankAccountEntity.shebaId,
+           },
+           create: {
+             id: bankAccountEntity.id,
+             accountHolderName: bankAccountEntity.accountHolderName,
+             shebaId: bankAccountEntity.shebaId,
+             cardNumber: bankAccountEntity.cardNumber,
+             branchCode: bankAccountEntity.branchCode,
+             branchName: bankAccountEntity.branchName,
+             turnover: bankAccountEntity.turnover,
+             type: bankAccountEntity.type,
+             status: bankAccountEntity.status,
+             score: String(bankAccountEntity.score),
+             userId: user.id,
+           },
+           update: {
+             id: bankAccountEntity.id,
+             accountHolderName: bankAccountEntity.accountHolderName,
+             shebaId: bankAccountEntity.shebaId,
+             cardNumber: bankAccountEntity.cardNumber,
+             branchCode: bankAccountEntity.branchCode,
+             branchName: bankAccountEntity.branchName,
+             turnover: bankAccountEntity.turnover,
+             type: bankAccountEntity.type,
+             status: bankAccountEntity.status,
+             score: String(bankAccountEntity.score),
+             userId: user.id,
+           }
+         });
 
-    const dataModel = await prisma.bankAccount.createManyAndReturn({
-      data: bankAccountEntities,
-    });
-
-    return dataModel.map(data => BankAccount.createFromSnapshot(data));
+         return dataModel && BankAccount.createFromSnapshot(dataModel);
+       })
+     );
   };
 }
 
