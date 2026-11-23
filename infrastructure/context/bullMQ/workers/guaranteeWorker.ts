@@ -72,7 +72,7 @@ class GuaranteeWorker {
     });
 
     return dataModel && UserInquery.createFromSnapshot(dataModel);
-  }
+  };
 
   public async updateUserGuaranteeData(nationalId: string): Promise<UserInquery> {
     const user = await this.getUserByNationalId(nationalId);
@@ -97,7 +97,7 @@ class GuaranteeWorker {
   };
 }
 
-export async function guaranteeWorkerProcessor(nationalId: string) {
+export async function guaranteeWorkerProcessor(nationalId: string): Promise<UserInquery> {
   const guaranteeWorker = new GuaranteeWorker();
 
   return await guaranteeWorker.updateUserGuaranteeData(nationalId);
