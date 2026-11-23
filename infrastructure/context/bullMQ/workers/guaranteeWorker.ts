@@ -3,6 +3,7 @@ import env from '#substructure/env.ts';
 import prisma from '#context/dbContext/prisma/client.ts';
 import User from '#models/User.ts';
 import UserInquery, { Guarantee } from '#models/UserInquery.ts';
+import { UserInqueryFactory } from '#domain/factories/UserInqueryFactory.ts';
 
 
 export type GuaranteeWebServiceResponse = {
@@ -42,18 +43,36 @@ class GuaranteeWorker {
     return dataModel && User.createFromSnapshot(dataModel);
   };
 
-  private async updateUserInQueryGuarantee(id: string, updateData: GuaranteeWebServiceResponse['data'][number]): Promise<UserInquery> {
-    const dataModel = await prisma.userInquery.update({
-      where: {
-        id
-      },
+  private async addOrUpdateUserInQueryGuarantee(updateData: GuaranteeWebServiceResponse['data'], userId: string, id?: string): Promise<UserInquery> {
+    // Update
+    if (id) {
+      const dataModel = await prisma.userInquery.update({
+        where: {
+          id
+        },
+        data: {
+          guarantees: updateData
+        }
+      });
+
+      return dataModel && UserInquery.createFromSnapshot(dataModel);
+    }
+
+    // Create
+    const userInqueryEntity = UserInqueryFactory.create({
+      userId: userId
+    });
+
+    const dataModel = await prisma.userInquery.create({
       data: {
-        guarantees: updateData
+        id: userInqueryEntity.id,
+        guarantees: userInqueryEntity.guarantees,
+        userId: userInqueryEntity.userId,
       }
     });
 
     return dataModel && UserInquery.createFromSnapshot(dataModel);
-  };
+  }
 
   public async updateUserGuaranteeData(nationalId: string): Promise<UserInquery> {
     const user = await this.getUserByNationalId(nationalId);
@@ -65,10 +84,11 @@ class GuaranteeWorker {
 
     const guaranteeData = response.data;
 
-    if (!user.userInqueries)
-      throw new Error(`User doesn't have Inquiries to update: ${nationalId}`);
-
-    const userInquery = await this.updateUserInQueryGuarantee(user.userInqueries.id, guaranteeData);
+    const userInquery = await this.addOrUpdateUserInQueryGuarantee(
+      guaranteeData,
+      user.id,
+      user?.userInqueries?.id
+    );
 
     if (!userInquery)
       throw new Error(`خطا در هنگام به روزرسانی استعلام کاربر.`);
