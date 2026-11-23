@@ -15,8 +15,8 @@ type BankAccountWebServiceData = {
   branchName: string;
   turnover: string;
   score: number;
-  type: string;
-  status: string;
+  type: 'CURRENT' | 'QARZ_AL_HASAN_SAVINGS' | 'SHORT_TERM_ORDINARY' | 'SHORT_TERM_SPECIAL' | 'LONG_TERM';
+  status: 'ACTIVE' | 'INACTIVE' | 'DORMANT' | 'BLOCKED' | 'PENDING_ACTIVATION' | 'CLOSED';
 };
 
 class BankAccountsWorker {
