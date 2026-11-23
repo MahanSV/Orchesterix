@@ -2,6 +2,8 @@ import axios, { AxiosInstance } from 'axios';
 import env from '#substructure/env.ts';
 import prisma from '#context/dbContext/prisma/client.ts';
 import User from '#models/User.ts';
+import UserInquery from '#models/UserInquery.ts';
+import { UserInqueryFactory } from '#domain/factories/UserInqueryFactory.ts';
 
 export type PointWebServiceResponse =  {
   message: string;
@@ -39,8 +41,64 @@ class PointWorker {
 
     return dataModel && User.createFromSnapshot(dataModel);
   };
+
+  private async addOrUpdateUserInQueryPoint(updateData: string, userId: string, id?: string ): Promise<UserInquery> {
+    // Update
+    if (id) {
+      const dataModel = await prisma.userInquery.update({
+        where: {
+          id
+        },
+        data: {
+          point: updateData
+        }
+      });
+
+      return dataModel && UserInquery.createFromSnapshot(dataModel);
+    }
+
+    // Create
+    const userInqueryEntity = UserInqueryFactory.create({
+      userId: userId,
+      point: updateData
+    });
+
+    const dataModel = await prisma.userInquery.create({
+      data: {
+        id: userInqueryEntity.id,
+        point: userInqueryEntity.point,
+        userId: userInqueryEntity.userId,
+      }
+    });
+
+    return dataModel && UserInquery.createFromSnapshot(dataModel);
+  };
+
+  public async updateUserInqueryPointData(nationalId: string): Promise<UserInquery> {
+    const user = await this.getUserByNationalId(nationalId);
+
+    if (!user)
+      throw new Error(`User not found: ${nationalId}`);
+
+    const response = await this.executePointWebService(nationalId);
+
+    const userPoint = response.data ? String(response.data) : '0';
+    
+    const userInquery = await this.addOrUpdateUserInQueryPoint(
+      userPoint,
+      user.id,
+      user?.userInqueries?.id
+    );
+
+    if (!userInquery)
+      throw new Error('خطا در هنگام به روزرسانی استعلام امتیاز کاربر.');
+
+    return userInquery;
+  };
 }
 
-export async function PointWorkerProcessor(nationalId: string) {
+export async function PointWorkerProcessor(nationalId: string): Promise<UserInquery>  {
   const pointWorker = new PointWorker();
+
+  return await pointWorker.updateUserInqueryPointData(nationalId);
 }
