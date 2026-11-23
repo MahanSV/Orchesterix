@@ -33,11 +33,13 @@ export async function setupWorkers(): Promise<void> {
       handler: async (job) =>
         await guaranteeWorkerProcessor(job.data.nationalId),
     },
+    // Test ✅
     {
       queueName: 'Loan',
       handler: async (job) =>
         await loanWorkerProcessor(job.data.nationalId),
     },
+    // Test ✅
     {
       queueName: 'Point',
       handler: async (job) =>
