@@ -38,7 +38,7 @@ export interface UserInqueryConstructorParams {
     point?: string;
     guarantees?: Guarantee[];
     loans?: Loan[];
-    totalTurnover: number;
+    totalTurnover?: number;
     createdAt: Date;
     updatedAt: Date;
     userId: string;
@@ -49,7 +49,7 @@ export interface UserInquerySnapshotParams {
     point?: string;
     guarantees?: Guarantee[];
     loans?: Loan[];
-    totalTurnover: number;
+    totalTurnover?: number;
     createdAt: Date;
     updatedAt: Date;
     userId: string;
@@ -60,7 +60,7 @@ class UserInquery extends BaseModel {
     private _point?: string;
     private _guarantees?: Guarantee[];
     private _loans?: Loan[];
-    private _totalTurnover!: number;
+    private _totalTurnover?: number;
     private _createdAt!: Date;
     private _updatedAt!: Date;
     private _userId!: string;
