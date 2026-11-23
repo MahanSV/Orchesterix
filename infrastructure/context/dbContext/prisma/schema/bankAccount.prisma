@@ -1,7 +1,7 @@
 model BankAccount {
   id                String            @unique
   accountHolderName String
-  shebaId           String
+  shebaId           String            @unique
   cardNumber        String
   branchCode        String
   branchName        String
