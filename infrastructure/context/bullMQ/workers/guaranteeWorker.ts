@@ -91,7 +91,7 @@ class GuaranteeWorker {
     );
 
     if (!userInquery)
-      throw new Error(`خطا در هنگام به روزرسانی استعلام کاربر.`);
+      throw new Error(`خطا در هنگام به روزرسانی استعلام ضمانتنامه های کاربر.`);
 
     return userInquery;
   };
