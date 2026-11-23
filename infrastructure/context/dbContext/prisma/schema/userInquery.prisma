@@ -2,6 +2,7 @@ model UserInquery {
   id            String   @unique
   point         String?
   guarantees    Json?
+  loans         Json?
   totalTurnover BigInt?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt

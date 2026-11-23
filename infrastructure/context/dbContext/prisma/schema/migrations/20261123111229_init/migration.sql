@@ -125,6 +125,7 @@ CREATE TABLE "UserInquery" (
     "id" TEXT NOT NULL,
     "point" TEXT,
     "guarantees" JSONB,
+    "loans" JSONB,
     "totalTurnover" BIGINT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,

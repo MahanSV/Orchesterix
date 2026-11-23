@@ -11,6 +11,7 @@ export class UserInqueryFactory {
       id : crypto.randomUUID(), // Generate ID if isn't provided
       point: command.point ? command.point : undefined,
       guarantees: command.guarantees ? command.guarantees : undefined,
+      loans: command.loans ? command.loans : undefined,
       totalTurnover: command.totalTurnover,
       createdAt: command.createdAt || new Date(),
       updatedAt: command.updatedAt || new Date(),

@@ -2,25 +2,12 @@ import axios, { AxiosInstance } from 'axios';
 import env from '#substructure/env.ts';
 import prisma from '#context/dbContext/prisma/client.ts';
 import User from '#models/User.ts';
-import UserInquery from '#models/UserInquery.ts';
+import UserInquery, { Guarantee } from '#models/UserInquery.ts';
 
 
 export type GuaranteeWebServiceResponse = {
   message: string;
-  data: {
-    id: string;
-    guaranteeNumber: string;
-    type: string;
-    bankName: string;
-    beneficiary: string;
-    applicant: string;
-    amount: number,
-    currency: string;
-    issueDate: string;
-    expiryDate: string;
-    status: string;
-    description: string;
-  }[];
+  data: Guarantee[];
 };
 
 class GuaranteeWorker {

@@ -2,25 +2,12 @@ import axios, { AxiosInstance } from 'axios';
 import env from '#substructure/env.ts';
 import prisma from '#context/dbContext/prisma/client.ts';
 import User from '#models/User.ts';
+import { Loan } from '#models/UserInquery.ts';
+
 
 export type LoanWorkerWebServiceResponse = {
   message: string;
-  data: {
-    id: string;
-    loanNumber: string;
-    borrower: string;
-    bankName: string;
-    loanType: 'PERSONAL' | 'HOME' | 'BUSINESS' | 'AUTO';
-    principal: number;
-    interestRate: number;
-    termMonths: number;
-    monthlyInstallment: number;
-    paidInstallments: number;
-    remainingBalance: number;
-    issueDate: Date;
-    maturityDate: Date;
-    status: 'ACTIVE' | 'PAID' | 'OVERDUE' | 'DEFAULTED' | 'PENDING';
-  }[]
+  data: Loan[];
 };
 
 class LoanWorker {

@@ -1,32 +1,54 @@
 import BaseModel from '#models/base/baseModel.ts';
 import User, {UserSnapshotParams} from "#models/User.ts";
 
+export type Guarantee = {
+  id: string;
+  guaranteeNumber: string;
+  type: string;
+  bankName: string;
+  beneficiary: string;
+  applicant: string;
+  amount: number,
+  currency: string;
+  issueDate: string;
+  expiryDate: string;
+  status: string;
+  description: string;
+}
+
+export type Loan = {
+  id: string;
+  loanNumber: string;
+  borrower: string;
+  bankName: string;
+  loanType: 'PERSONAL' | 'HOME' | 'BUSINESS' | 'AUTO';
+  principal: number;
+  interestRate: number;
+  termMonths: number;
+  monthlyInstallment: number;
+  paidInstallments: number;
+  remainingBalance: number;
+  issueDate: Date;
+  maturityDate: Date;
+  status: 'ACTIVE' | 'PAID' | 'OVERDUE' | 'DEFAULTED' | 'PENDING';
+};
 
 export interface UserInqueryConstructorParams {
     id: string;
     point?: string;
-    guarantees: any;
+    guarantees?: Guarantee[];
+    loans?: Loan[];
     totalTurnover: number;
     createdAt: Date;
     updatedAt: Date;
     userId: string;
 }
 
-/**
- * bankAccount
- * bankAccountFacility
- * facilitiesCategory
- * facilityField
- * facilityTemplate
- * FAQ
- * ticket
- * userInquery
- */
-
 export interface UserInquerySnapshotParams {
     id: string;
     point?: string;
-    guarantees: any;
+    guarantees?: Guarantee[];
+    loans?: Loan[];
     totalTurnover: number;
     createdAt: Date;
     updatedAt: Date;
@@ -36,7 +58,8 @@ export interface UserInquerySnapshotParams {
 
 class UserInquery extends BaseModel {
     private _point?: string;
-    private _guarantees!: any;
+    private _guarantees?: Guarantee[];
+    private _loans?: Loan[];
     private _totalTurnover!: number;
     private _createdAt!: Date;
     private _updatedAt!: Date;
@@ -56,6 +79,7 @@ class UserInquery extends BaseModel {
 
         userInquery.point = params.point;
         userInquery.guarantees = params.guarantees;
+        userInquery.loans = params.loans;
         userInquery.totalTurnover = params.totalTurnover;
         userInquery.createdAt = params.createdAt;
         userInquery.updatedAt = params.updatedAt;
@@ -70,6 +94,7 @@ class UserInquery extends BaseModel {
         userInquery.id = snapshot.id;
         userInquery.point = snapshot.point;
         userInquery.guarantees = snapshot.guarantees;
+        userInquery.loans = snapshot.loans;
         userInquery.totalTurnover = snapshot.totalTurnover;
         userInquery.createdAt = snapshot.createdAt;
         userInquery.updatedAt = snapshot.updatedAt;
@@ -91,6 +116,13 @@ class UserInquery extends BaseModel {
     };
     public set guarantees(value) {
         this._guarantees = value;
+    };
+
+    public get loans() {
+      return this._loans;
+    };
+    public set loans(value) {
+      this._loans = value;
     };
 
     public get totalTurnover() {

@@ -12,6 +12,7 @@ export class UserInqueryMapper {
       id: entity.id,
       point: entity.point,
       guarantees: entity.guarantees,
+      loans: entity.loans,
       totalTurnover: entity.totalTurnover,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
