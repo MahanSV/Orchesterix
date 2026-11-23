@@ -60,7 +60,8 @@ class LoanWorker {
 
     // Create
     const userInqueryEntity = UserInqueryFactory.create({
-      userId: userId
+      userId: userId,
+      loans: updateData
     });
 
     const dataModel = await prisma.userInquery.create({

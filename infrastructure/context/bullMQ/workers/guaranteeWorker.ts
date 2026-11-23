@@ -60,7 +60,8 @@ class GuaranteeWorker {
 
     // Create
     const userInqueryEntity = UserInqueryFactory.create({
-      userId: userId
+      userId: userId,
+      guarantees: updateData
     });
 
     const dataModel = await prisma.userInquery.create({
