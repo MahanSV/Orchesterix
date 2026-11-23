@@ -12,7 +12,7 @@ export class UserInqueryFactory {
       point: command.point ? command.point : undefined,
       guarantees: command.guarantees ? command.guarantees : undefined,
       loans: command.loans ? command.loans : undefined,
-      totalTurnover: command.totalTurnover,
+      totalTurnover: command.totalTurnover ?? undefined,
       createdAt: command.createdAt || new Date(),
       updatedAt: command.updatedAt || new Date(),
       userId: command.userId,
