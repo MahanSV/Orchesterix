@@ -5,6 +5,8 @@ import { FacilitiesCategoryDTO } from '#application/dto/FacilitiesCategoryDTO.ts
 import httpStatus from 'http-status';
 import ApiError from '#webhost/errors/apiError.ts';
 import { FacilitiesCategoryMapper } from '#application/mappers/FacilitiesCategoryMapper.ts';
+import { createFacilityCategoryCommand } from '#application/types/facilitiesCategory/command.ts';
+import { FacilityCategoryFactory } from '#domain/factories/FacilityCategoryFactory.ts';
 
 export class FacilitiesCategoryService implements FacilitiesCategoryServiceInterface {
   private facilitiesCategoryRepository: FacilitiesCategoryRepositoryInterface;
@@ -20,5 +22,16 @@ export class FacilitiesCategoryService implements FacilitiesCategoryServiceInter
       throw new ApiError(httpStatus.NOT_FOUND, 'دسته تسهیلات پیدا نشد.', 'Error');
 
     return FacilitiesCategoryMapper.toDTO(facilitiesCategory);
+  };
+
+  async createFacilityCategoryForSeed(command: createFacilityCategoryCommand): Promise<FacilitiesCategoryDTO> {
+    const facilityCategoryEntity = FacilityCategoryFactory.create(command);
+
+    const addFacilityCategory = await this.facilitiesCategoryRepository.create(facilityCategoryEntity);
+
+    if (!addFacilityCategory)
+      throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'خطا در هنگام ثبت دسته تسهیلات.', 'Error');
+
+    return FacilitiesCategoryMapper.toDTO(addFacilityCategory);
   };
 }

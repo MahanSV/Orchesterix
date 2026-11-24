@@ -5,6 +5,8 @@ import { FacilityTemplateDTO } from '#application/dto/FacilityTemplateDTO.ts';
 import httpStatus from 'http-status';
 import ApiError from '#webhost/errors/apiError.ts';
 import { FacilityTemplateMapper } from '#application/mappers/FacilityTemplateMapper.ts';
+import { createFacilityTemplateCommand } from '#application/types/facilityTemplate/command.ts';
+import { FacilityTemplateFactory } from '#domain/factories/FacilityTemplateFactory.ts';
 
 export class FacilityTemplateService implements FacilityTemplateServiceInterface {
   private facilityTemplateRepository: FacilityTemplateRepositoryInterface;
@@ -20,5 +22,16 @@ export class FacilityTemplateService implements FacilityTemplateServiceInterface
       throw new ApiError(httpStatus.NOT_FOUND, 'قالب رفاهی مورد نظر پیدا نشد.', 'Error');
 
     return FacilityTemplateMapper.toDTO(facilityTemplate);
+  };
+
+  async createForSeed(command: createFacilityTemplateCommand): Promise<FacilityTemplateDTO> {
+    const entity = FacilityTemplateFactory.create(command);
+
+    const addFacilityTemplate = await this.facilityTemplateRepository.create(entity);
+
+    if (!addFacilityTemplate)
+      throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'خطا در هنگام ایجاد قالب تسهیلات.', 'Error');
+
+    return FacilityTemplateMapper.toDTO(addFacilityTemplate);
   };
 }

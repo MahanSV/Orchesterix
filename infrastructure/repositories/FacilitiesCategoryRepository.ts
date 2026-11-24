@@ -15,4 +15,23 @@ export class FacilitiesCategoryRepository extends BaseRepository<FacilitiesCateg
 
     return dataModel && FacilitiesCategory.createFromSnapshot(dataModel);
   };
+
+  async create(entity: FacilitiesCategory): Promise<FacilitiesCategory> {
+    const dataModel = await prisma.facilitiesCategory.create({
+      data: this.createSchemaFromFacilitiesCategory(entity),
+    });
+
+    return dataModel && FacilitiesCategory.createFromSnapshot(dataModel);
+  };
+
+  private createSchemaFromFacilitiesCategory(entity: FacilitiesCategory) {
+    return {
+      id: entity.id,
+      name: entity.name,
+      key: entity.key,
+      order: entity.order,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
+    };
+  };
 }
