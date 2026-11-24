@@ -33,6 +33,15 @@ const envSchema = z.object({
 	API_DOC_BASE_PATH: z.string().default('http://localhost:3001'),
 	BULLMQ_USERNAME: z.string(),
 	BULLMQ_PASSWORD: z.string(),
+  S3_ENDPOINT: z.string(),
+  S3_PORT: z.string(),
+  S3_USE_SSL: z.string(),
+  S3_ACCESS_KEY: z.string(),
+  S3_SECRET_KEY: z.string(),
+  S3_DEFAULT_BUCKET: z.string(),
+  S3_PUBLIC_END_POINT: z.string(),
+  S3_PUBLIC_PORT: z.string(),
+  S3_PUBLIC_USE_SSL: z.string(),
 });
 
 const value: any = zodValidateSync(process.env, envSchema, {}, 'Env Validation: ');
@@ -57,4 +66,13 @@ export default {
 	apiDocBasePath:  value.API_DOC_BASE_PATH,
 	bullMQUsername: value.BULLMQ_USERNAME,
 	bullMQPassword: value.BULLMQ_PASSWORD,
+  s3Endpoint: value.S3_ENDPOINT,
+  s3Port: value.S3_PORT,
+  s3AccessKey: value.S3_ACCESS_KEY,
+  s3SecretKey: value.S3_SECRET_KEY,
+  s3UseSSL: value.S3_USE_SSL,
+  s3DefaultBucket: value.S3_DEFAULT_BUCKET,
+  s3PublicEndPoint: value.S3_PUBLIC_END_POINT,
+  s3PublicPort: Number(value.S3_PUBLIC_PORT),
+  s3PublicUseSSL: value.S3_PUBLIC_USE_SSL,
 };
