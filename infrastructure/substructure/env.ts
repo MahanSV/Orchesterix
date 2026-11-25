@@ -70,9 +70,9 @@ export default {
   s3Port: value.S3_PORT,
   s3AccessKey: value.S3_ACCESS_KEY,
   s3SecretKey: value.S3_SECRET_KEY,
-  s3UseSSL: value.S3_USE_SSL,
+  s3UseSSL: value.S3_USE_SSL ? value.S3_USE_SSL === "true" : false,
   s3DefaultBucket: value.S3_DEFAULT_BUCKET,
   s3PublicEndPoint: value.S3_PUBLIC_END_POINT,
   s3PublicPort: Number(value.S3_PUBLIC_PORT),
-  s3PublicUseSSL: value.S3_PUBLIC_USE_SSL,
+  s3PublicUseSSL: value.S3_PUBLIC_USE_SSL ? value.S3_PUBLIC_USE_SSL === "true" : false,
 };

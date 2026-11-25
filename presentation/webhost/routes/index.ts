@@ -4,6 +4,7 @@ import staffRouter from '#routes/staff.ts';
 import faqRouter from '#routes/faq.ts';
 import ticketRouter from '#routes/ticket.ts';
 import userInqueryRouter from '#routes/userInquery.ts';
+import fileRouter from '#routes/file.ts';
 
 // @ts-ignore
 const router = express.Router();
@@ -29,6 +30,10 @@ const routes = [
     path: '/userInquiries',
     source: userInqueryRouter
   },
+  {
+    path: '/files',
+    source: fileRouter
+  }
 ];
 
 routes.forEach((route) => {

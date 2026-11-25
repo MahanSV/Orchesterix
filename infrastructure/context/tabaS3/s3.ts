@@ -3,7 +3,12 @@ import env from '#substructure/env.ts';
 import ApiError from '#webhost/errors/apiError.ts';
 import httpStatus from 'http-status';
 
-class FileService {
+export interface FileManagerServiceInterface {
+  fileUploader(file: Express.Multer.File, uploaderId: string): Promise<string>;
+  downloadFileLink(id: string): Promise<string>
+}
+
+class FileManagerService implements FileManagerServiceInterface {
   private s3;
 
   constructor() {
@@ -42,6 +47,6 @@ class FileService {
   };
 }
 
-const fileService = new FileService();
-
-export default fileService;
+// Singleton
+const fileManagerService = new FileManagerService();
+export default fileManagerService;
