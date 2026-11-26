@@ -138,4 +138,21 @@ export default class TicketRepository extends BaseRepository<Ticket> implements 
 
     return dataModel && Ticket.createFromSnapshot(dataModel);
   };
+
+  async createTicketByUser(entity: Ticket): Promise<Ticket> {
+    const dataModel = await prisma.ticket.create({
+      data: {
+        id: entity.id,
+        title: entity.title,
+        description: entity.description,
+        attachment: entity?.attachment,
+        status: entity.status,
+        createdAt: entity.createdAt,
+        updatedAt: entity.updatedAt,
+        userId: entity.userId,
+      }
+    });
+
+    return dataModel && Ticket.createFromSnapshot(dataModel);
+  };
 }

@@ -15,18 +15,23 @@ import { TicketFactory } from '#domain/factories/TicketFactory.ts';
 import StaffRepository from '#repositories/StaffRepository.ts';
 import { StaffRepositoryInterface } from '#domain/interfaces/StaffRepository.ts';
 import { TicketStatus } from '#domain/enums/ticket.ts';
+import { UserRepositoryInterface } from '#domain/interfaces/UserRepository.ts';
+import UserRepository from '#repositories/UserRepository.ts';
 
 
 export class TicketService implements TicketServiceInterface {
   private ticketRepository: TicketRepositoryInterface;
   private staffRepository: StaffRepositoryInterface;
+  private userRepository: UserRepositoryInterface;
 
   constructor(
     ticketRepository: TicketRepositoryInterface = new TicketRepository(),
-    staffRepository: StaffRepositoryInterface = new StaffRepository()
+    staffRepository: StaffRepositoryInterface = new StaffRepository(),
+    userRepository: UserRepositoryInterface = new UserRepository()
   ) {
     this.ticketRepository = ticketRepository;
     this.staffRepository = staffRepository;
+    this.userRepository = userRepository;
   };
 
   async findById(id: string): Promise<TicketDTO> {
@@ -38,10 +43,21 @@ export class TicketService implements TicketServiceInterface {
     return TicketMapper.toDTO(ticket);
   };
 
-  /*async createTicketByUser(command: createTicketCommand): Promise<TicketDTO> {
+  async createTicketByUser(command: createTicketCommand): Promise<TicketDTO> {
+    const user = await this.userRepository.getUserById(command.userId);
+
+    if (!user)
+      throw new ApiError(httpStatus.NOT_FOUND, 'کاربر وجود ندارد.', 'Error');
+
     const ticketEntity = TicketFactory.create(command);
-   //  TODO: Need's to complete.
-  };*/
+
+    const addTicket = await this.ticketRepository.createTicketByUser(ticketEntity);
+
+    if (!addTicket)
+      throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'خطا در هنگام ثبت تیکت کاربر.', 'Error');
+
+    return TicketMapper.toDTO(ticketEntity);
+  };
 
   async ticketAnswer(id: string, answerDescription: string, staffId: string): Promise<TicketDTO> {
     const staff = await this.staffRepository.checkStaffExist(staffId);

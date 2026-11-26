@@ -12,7 +12,7 @@ export class TicketFactory {
       id: crypto.randomUUID(), // Generate ID if isn't provided
       title: command.title,
       description: command.description,
-      attachment: command.attachment,
+      attachment: command.attachment ?? undefined,
       answer: command.answer ? command.answer : undefined,
       status: command.status || TicketStatus.open,
       createdAt: command.createdAt || new Date(),
@@ -22,8 +22,6 @@ export class TicketFactory {
       staffId: command.staffId ? command.staffId : undefined,
     });
   };
-
-
 
   public static createAnswer(staffId: string, description: string, lastAnswer?: TicketAnswer[]): TicketAnswer[] {
     if (description.trim().split(/\s+/).length < 3) {

@@ -41,11 +41,9 @@ const ticketDTOSchema = z.object({
 }).openapi('ticketDTOSchema');
 
 const createTicketByUserSchema = z.object({
+  userId: z.string(),
   title: z.string(),
   description: z.string(),
-  attachment: z.string()
-    .nullable()
-    .optional(),
 });
 
 const ticketAnswerSchema = z.object({

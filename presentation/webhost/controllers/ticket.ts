@@ -30,7 +30,11 @@ class TicketController {
 
   public createTicketByUser = async (req: Request, res: Response): Promise<any> => {
     try {
-      const command = {};
+      const command = {
+        title: req.body.title,
+        description: req.body.description,
+        userId: req.body.userId,
+      };
 
       const ticket = await this.ticketService.createTicketByUser(command);
 
