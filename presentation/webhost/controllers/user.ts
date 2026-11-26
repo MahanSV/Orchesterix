@@ -115,7 +115,25 @@ class UserController {
         message: 'کاربر با موفقیت به روزرسانی شد.',
         updatedUser
       });
+    };
+
+  public devLoginUser = async (req: Request, res: Response): Promise<any> => {
+    try {
+      const command = {
+        mobile: req.body.mobile,
+        password: req.body.password,
+      };
+
+      const user = await this.userService.loginUser(command);
+
+      res.status(httpStatus.OK).send({
+        message: 'کاربر با موفقیت وارد شد.',
+        user
+      });
+    } catch (error) {
+      throw error;
     }
+  };
 }
 
 export default new UserController();

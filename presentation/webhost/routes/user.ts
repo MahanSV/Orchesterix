@@ -238,4 +238,60 @@ api.patch(
   UserController.updateUser
 );
 
+api.post(
+  '/login/dev',
+  {
+    tags: ['Users'],
+    request: {
+      body: {
+        content: {
+          'application/json': { schema: loginUserSchema }
+        }
+      }
+    },
+    responses: {
+      200: {
+        description: 'add user',
+        content: {
+          'application/json': { schema: userLoginDTOSchema }
+        }
+      },
+      400: {
+        description: 'Bad Request',
+        content: {
+          'application/json': {
+            schema: errorSchema
+          }
+        },
+      },
+      401: {
+        description: 'Unauthorized',
+        content: {
+          'application/json': { schema: errorSchema }
+        }
+      },
+      404: {
+        description: 'Not Found',
+        content: {
+          'application/json': {
+            schema: errorSchema
+          }
+        },
+      },
+      500: {
+        description: 'Internal Server Error',
+        content: {
+          'application/json': {
+            schema: z.object({
+              error: z.string()
+            })
+          }
+        }
+      }
+    }
+  },
+  validate(loginUserSchema),
+  UserController.devLoginUser
+);
+
 export default router;
