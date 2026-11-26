@@ -25,9 +25,7 @@ class FileController {
         });
       }
       else {
-        res.status(httpStatus.BAD_REQUEST).send({
-          message: 'لینک فایل نامعتبر است.'
-        });
+        throw new ApiError(httpStatus.BAD_REQUEST, 'لینک فایل نامعتبر است.', 'Error');
       }
     }
     catch (error) {
@@ -40,11 +38,32 @@ class FileController {
       const file = req.file as Express.Multer.File | null | undefined;
       const uploaderId: string | undefined = req?.tokenData?.id;
 
-      if (!uploaderId) throw new ApiError(httpStatus.NOT_FOUND, 'کاربر یافت نشد.', 'Error')
+      if (!uploaderId) throw new ApiError(httpStatus.NOT_FOUND, 'کاربر یافت نشد.', 'Error');
 
       if (!file) throw new ApiError(httpStatus.BAD_REQUEST, 'فایل بارگیری نشد.', 'Error');
 
       const uploadedFile = await this.fileService.uploadFile(uploaderId, file);
+
+      res.status(httpStatus.CREATED).send({
+        message: 'فایل با موفقیت دریافت شد.',
+        uploadedFile
+      });
+    }
+    catch (error) {
+      throw error;
+    }
+  };
+
+  public uploadUserTicketFile= async (req: Request, res: Response): Promise<any> => {
+    try {
+      const file = req.file as Express.Multer.File | null | undefined;
+      const uploaderId: string | undefined = req?.tokenData?.id;
+
+      if (!uploaderId) throw new ApiError(httpStatus.NOT_FOUND, 'کاربر یافت نشد.', 'Error');
+
+      if (!file) throw new ApiError(httpStatus.BAD_REQUEST, 'فایل بارگیری نشد.', 'Error');
+
+      const uploadedFile = await this.fileService.uploadUserTicketFile(uploaderId, file);
 
       res.status(httpStatus.CREATED).send({
         message: 'فایل با موفقیت دریافت شد.',
