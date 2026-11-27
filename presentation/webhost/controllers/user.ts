@@ -52,10 +52,10 @@ class UserController {
 
             const user = await this.userService.getUser(id);
 
-          res.status(httpStatus.OK).send({
-            message: 'کاربر با موفقیت دریافت شد.',
-            user
-          });
+            res.status(httpStatus.OK).send({
+              message: 'کاربر با موفقیت دریافت شد.',
+              user
+            });
         } catch (error) {
             throw error;
         }
