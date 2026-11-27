@@ -1,6 +1,6 @@
 
 export type createFacilityTemplateCommand = {
-  id?: string,
+  id?: string;
   value: string;
   key: string;
   order: number;
