@@ -41,7 +41,7 @@ class FacilitiesSeed {
           facilitiesCategoryId: "",
           facilityFields: [
             {
-              value: "مبلغ درخواستی",
+              value: "مبلغ درخواستی از بانک",
               facilityTemplateId: ""
             },
             {
@@ -65,7 +65,7 @@ class FacilitiesSeed {
           facilitiesCategoryId: "",
           facilityFields: [
             {
-              value: "مبلغ درخواستی",
+              value: "مبلغ درخواستی از بانک",
               facilityTemplateId: ""
             },
             {
@@ -85,7 +85,7 @@ class FacilitiesSeed {
           facilitiesCategoryId: "",
           facilityFields: [
             {
-              value: "مبلغ درخواستی",
+              value: "مبلغ درخواستی از بانک",
               facilityTemplateId: ""
             },
             {
@@ -120,7 +120,7 @@ class FacilitiesSeed {
           facilitiesCategoryId: "",
           facilityFields: [
             {
-              value: "مبلغ ضمانت‌نامه",
+              value: "مبلغ درخواستی از بانک",
               facilityTemplateId: ""
             },
             {
@@ -148,7 +148,7 @@ class FacilitiesSeed {
           facilitiesCategoryId: "",
           facilityFields: [
             {
-              value: "مبلغ ضمانت‌نامه",
+              value: "مبلغ درخواستی از بانک",
               facilityTemplateId: ""
             },
             {
@@ -180,7 +180,7 @@ class FacilitiesSeed {
               facilityTemplateId: ""
             },
             {
-              value: "مبلغ ضمانت‌نامه",
+              value: "مبلغ درخواستی از بانک",
               facilityTemplateId: ""
             },
             {
@@ -225,7 +225,7 @@ class FacilitiesSeed {
           facilitiesCategoryId: "",
           facilityFields: [
             {
-              value: "مبلغ سرمایه موردنیاز",
+              value: "مبلغ درخواستی از بانک",
               facilityTemplateId: ""
             },
             {
@@ -273,7 +273,7 @@ class FacilitiesSeed {
               facilityTemplateId: ""
             },
             {
-              value: "سرمایه درخواستی از بانک",
+              value: "مبلغ درخواستی از بانک",
               facilityTemplateId: ""
             },
             {
