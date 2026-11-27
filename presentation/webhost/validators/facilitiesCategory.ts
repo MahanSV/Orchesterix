@@ -17,6 +17,11 @@ const facilitiesCategoryDTOSchema = z.object({
     .optional(),
 }).openapi('facilitiesCategoryDTOSchema');
 
+const getFacilitiesCategoryByIdSchema = z.object({
+  id: z.string(),
+});
+
 export {
   facilitiesCategoryDTOSchema,
+  getFacilitiesCategoryByIdSchema,
 };

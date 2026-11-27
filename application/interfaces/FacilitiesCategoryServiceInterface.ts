@@ -4,5 +4,6 @@ import { createFacilityCategoryCommand } from '#application/types/facilitiesCate
 
 export interface FacilitiesCategoryServiceInterface {
   findById(id: string): Promise<FacilitiesCategoryDTO>;
-  createFacilityCategoryForSeed(command: createFacilityCategoryCommand): Promise<FacilitiesCategoryDTO>
+  createFacilityCategoryForSeed(command: createFacilityCategoryCommand): Promise<FacilitiesCategoryDTO>;
+  getAllFacilitiesCategory(): Promise<FacilitiesCategoryDTO[]>;
 }

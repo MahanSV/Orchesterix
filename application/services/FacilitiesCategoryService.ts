@@ -34,4 +34,10 @@ export class FacilitiesCategoryService implements FacilitiesCategoryServiceInter
 
     return FacilitiesCategoryMapper.toDTO(addFacilityCategory);
   };
+
+  async getAllFacilitiesCategory(): Promise<FacilitiesCategoryDTO[]> {
+    const facilitiesCategories = await this.facilitiesCategoryRepository.getAllFacilitiesCategory();
+
+    return facilitiesCategories.length > 0 ? FacilitiesCategoryMapper.toDTOList(facilitiesCategories) : [];
+  };
 }

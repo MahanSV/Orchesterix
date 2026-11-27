@@ -5,6 +5,7 @@ import faqRouter from '#routes/faq.ts';
 import ticketRouter from '#routes/ticket.ts';
 import userInqueryRouter from '#routes/userInquery.ts';
 import fileRouter from '#routes/file.ts';
+import FacilitiesCategoryRouter from '#routes/facilitiesCategory.ts';
 
 // @ts-ignore
 const router = express.Router();
@@ -33,7 +34,11 @@ const routes = [
   {
     path: '/files',
     source: fileRouter
-  }
+  },
+  {
+    path: '/facilitiesCategory',
+    source: FacilitiesCategoryRouter
+  },
 ];
 
 routes.forEach((route) => {

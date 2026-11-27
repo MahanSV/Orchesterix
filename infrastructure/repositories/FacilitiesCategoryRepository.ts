@@ -10,7 +10,16 @@ export class FacilitiesCategoryRepository extends BaseRepository<FacilitiesCateg
 
   async findById(id: string): Promise<FacilitiesCategory | null> {
     const dataModel = await prisma.facilitiesCategory.findUnique({
-      where: { id }
+      where: {
+        id
+      },
+      include: {
+        facilityTemplates: {
+          include: {
+            facilityFields: true
+          }
+        }
+      }
     });
 
     return dataModel && FacilitiesCategory.createFromSnapshot(dataModel);
@@ -22,6 +31,16 @@ export class FacilitiesCategoryRepository extends BaseRepository<FacilitiesCateg
     });
 
     return dataModel && FacilitiesCategory.createFromSnapshot(dataModel);
+  };
+
+  async getAllFacilitiesCategory(): Promise<FacilitiesCategory[]> {
+    const dataModels = await prisma.facilitiesCategory.findMany({
+      include: {
+        facilityTemplates: true
+      }
+    });
+
+    return dataModels?.map(data => FacilitiesCategory.createFromSnapshot(data));
   };
 
   private createSchemaFromFacilitiesCategory(entity: FacilitiesCategory) {
