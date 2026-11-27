@@ -6,6 +6,7 @@ import ticketRouter from '#routes/ticket.ts';
 import userInqueryRouter from '#routes/userInquery.ts';
 import fileRouter from '#routes/file.ts';
 import FacilitiesCategoryRouter from '#routes/facilitiesCategory.ts';
+import bankAccountFacilityRouter from '#routes/bankAccountFacility.ts';
 
 // @ts-ignore
 const router = express.Router();
@@ -38,6 +39,10 @@ const routes = [
   {
     path: '/facilitiesCategory',
     source: FacilitiesCategoryRouter
+  },
+  {
+    path: '/bankAccountFacility',
+    source: bankAccountFacilityRouter
   },
 ];
 

@@ -12,3 +12,10 @@ export interface BankAccountFacilityDTO {
   bankAccount?: BankAccountDTO;
   facilityField?: FacilityFieldDTO;
 }
+
+export interface BankAccountFacilityFilterDTO {
+  bankAccountFacilities: BankAccountFacilityDTO[];
+  total: number;
+  page: number;
+  totalPages: number;
+}
