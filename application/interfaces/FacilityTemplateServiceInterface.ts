@@ -4,5 +4,5 @@ import { createFacilityTemplateCommand } from '#application/types/facilityTempla
 
 export interface FacilityTemplateServiceInterface {
   findById(id: string): Promise<FacilityTemplateDTO>;
-  createForSeed(command: createFacilityTemplateCommand): Promise<FacilityTemplateDTO>;
+  create(command: createFacilityTemplateCommand): Promise<FacilityTemplateDTO>;
 }

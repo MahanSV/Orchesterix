@@ -24,7 +24,7 @@ export class FacilityFieldService implements FacilityFieldServiceInterface {
     return FacilityFieldMapper.toDTO(facilityField);
   };
 
-  async createForSeed(command: createFacilityFieldCommand): Promise<FacilityFieldDTO> {
+  async create(command: createFacilityFieldCommand): Promise<FacilityFieldDTO> {
     const facilityFieldEntity = FacilityFieldFactory.create(command);
 
     const addFacilityField = await this.facilityFieldRepository.create(facilityFieldEntity);

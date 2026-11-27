@@ -305,17 +305,17 @@ class FacilitiesSeed {
   public async initialize(): Promise<void> {
     for (const category of this.facilitiesCategoryList) {
       const createdCategory =
-        await this.facilityCategoryService.createFacilityCategoryForSeed(category);
+        await this.facilityCategoryService.createFacilityCategory(category);
 
       for (const template of category.facilityTemplates) {
         const createdTemplate =
-          await this.facilityTemplateService.createForSeed({
+          await this.facilityTemplateService.create({
             ...template,
             facilitiesCategoryId: createdCategory.id,
           });
 
         for (const field of template.facilityFields) {
-          await this.facilityFieldService.createForSeed({
+          await this.facilityFieldService.create({
             ...field,
             facilityTemplateId: createdTemplate.id,
           });

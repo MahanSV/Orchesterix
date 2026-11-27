@@ -24,7 +24,7 @@ export class FacilitiesCategoryService implements FacilitiesCategoryServiceInter
     return FacilitiesCategoryMapper.toDTO(facilitiesCategory);
   };
 
-  async createFacilityCategoryForSeed(command: createFacilityCategoryCommand): Promise<FacilitiesCategoryDTO> {
+  async createFacilityCategory(command: createFacilityCategoryCommand): Promise<FacilitiesCategoryDTO> {
     const facilityCategoryEntity = FacilityCategoryFactory.create(command);
 
     const addFacilityCategory = await this.facilitiesCategoryRepository.create(facilityCategoryEntity);

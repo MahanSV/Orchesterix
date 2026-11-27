@@ -24,7 +24,7 @@ export class FacilityTemplateService implements FacilityTemplateServiceInterface
     return FacilityTemplateMapper.toDTO(facilityTemplate);
   };
 
-  async createForSeed(command: createFacilityTemplateCommand): Promise<FacilityTemplateDTO> {
+  async create(command: createFacilityTemplateCommand): Promise<FacilityTemplateDTO> {
     const entity = FacilityTemplateFactory.create(command);
 
     const addFacilityTemplate = await this.facilityTemplateRepository.create(entity);

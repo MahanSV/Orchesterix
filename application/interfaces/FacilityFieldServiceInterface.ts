@@ -4,5 +4,5 @@ import { createFacilityFieldCommand } from '#application/types/facilityField/com
 
 export interface FacilityFieldServiceInterface {
   findById(id: string): Promise<FacilityFieldDTO>;
-  createForSeed(command: createFacilityFieldCommand): Promise<FacilityFieldDTO>;
+  create(command: createFacilityFieldCommand): Promise<FacilityFieldDTO>;
 }
