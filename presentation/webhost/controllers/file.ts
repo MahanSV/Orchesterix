@@ -57,13 +57,12 @@ class FileController {
   public uploadUserTicketFile= async (req: Request, res: Response): Promise<any> => {
     try {
       const file = req.file as Express.Multer.File | null | undefined;
-      const uploaderId: string | undefined = req?.tokenData?.id;
-
-      if (!uploaderId) throw new ApiError(httpStatus.NOT_FOUND, 'کاربر یافت نشد.', 'Error');
+      const uploaderId = req.params.userId;
+      const ticketId = req.params.ticketId;
 
       if (!file) throw new ApiError(httpStatus.BAD_REQUEST, 'فایل بارگیری نشد.', 'Error');
 
-      const uploadedFile = await this.fileService.uploadUserTicketFile(uploaderId, file);
+      const uploadedFile = await this.fileService.uploadUserTicketFile(uploaderId, ticketId, file);
 
       res.status(httpStatus.CREATED).send({
         message: 'فایل با موفقیت دریافت شد.',

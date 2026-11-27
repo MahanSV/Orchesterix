@@ -6,6 +6,7 @@ import FileController from '#webhost/controllers/file.ts'
 import { errorSchema } from '#webhost/validators/errorSchema.ts';
 import { z } from 'zod';
 import { createApiRouter } from '#webhost/docs/openApiRouter.ts';
+import { uploadUserTicketFileParamsSchema } from '#webhost/validators/file.ts';
 
 
 const router = express.Router();
@@ -148,7 +149,7 @@ api.get(
 );
 
 api.post(
-  '/ticket/user',
+  '/ticket/user/:userId/:ticketId',
   {
     tags: ['Files'],
     request: {
@@ -158,6 +159,7 @@ api.post(
             description: 'Authentication cookie',
           }),
         }),
+      params: uploadUserTicketFileParamsSchema,
       body: {
         content: {
           'multipart/form-data': {
@@ -182,7 +184,7 @@ api.post(
     },
     responses: {
       200: {
-        description: 'upload file',
+        description: 'Ticket attachment uploaded.',
         content: {
           'application/json': {
             schema: z.object({
@@ -230,6 +232,7 @@ api.post(
   },
   upload.single('file'),
   authenticate,
+  validate(uploadUserTicketFileParamsSchema),
   FileController.uploadUserTicketFile,
 );
 

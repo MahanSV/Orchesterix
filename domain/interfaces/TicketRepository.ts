@@ -20,5 +20,6 @@ export interface TicketRepositoryInterface {
   }>;
   changeTicketStatus(command: changeTicketStatusCommand): Promise<Ticket>;
   staffClosingTicket(command: staffClosingTicketCommand): Promise<Ticket>;
-  createTicketByUser(entity: Ticket): Promise<Ticket>
+  createTicketByUser(entity: Ticket): Promise<Ticket>;
+  updateTicketAttachment(id: string, attachment: string): Promise<Ticket>
 }
