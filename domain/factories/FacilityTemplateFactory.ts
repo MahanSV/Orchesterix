@@ -10,7 +10,7 @@ export class FacilityTemplateFactory {
   public static create(command: createFacilityTemplateCommand): FacilityTemplate {
     // Add any domain logic or validation here before creating the entity
     return FacilityTemplate.create({
-      id : crypto.randomUUID(), // Generate ID if isn't provided
+      id : command.id || crypto.randomUUID(), // Generate ID if isn't provided
       value: command.value,
       key: command.key,
       order: command.order,

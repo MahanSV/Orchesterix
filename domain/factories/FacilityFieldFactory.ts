@@ -10,7 +10,7 @@ export class FacilityFieldFactory {
   public static create(command: createFacilityFieldCommand): FacilityField {
     // Add any domain logic or validation here before creating the entity
     return FacilityField.create({
-      id : crypto.randomUUID(), // Generate ID if isn't provided
+      id : command.id || crypto.randomUUID(), // Generate ID if isn't provided
       value: command.value,
       facilityTemplateId: command.facilityTemplateId,
     });

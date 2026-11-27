@@ -5,6 +5,8 @@ import { FacilityFieldRepository } from '#repositories/FacilityFieldRepository.t
 import httpStatus from 'http-status';
 import ApiError from '#webhost/errors/apiError.ts';
 import { FacilityFieldMapper } from '#application/mappers/FacilityFieldMapper.ts';
+import { createFacilityFieldCommand } from '#application/types/facilityField/command.ts';
+import { FacilityFieldFactory } from '#domain/factories/FacilityFieldFactory.ts';
 
 export class FacilityFieldService implements FacilityFieldServiceInterface {
   private facilityFieldRepository: FacilityFieldRepositoryInterface;
@@ -21,4 +23,15 @@ export class FacilityFieldService implements FacilityFieldServiceInterface {
 
     return FacilityFieldMapper.toDTO(facilityField);
   };
+
+  async createForSeed(command: createFacilityFieldCommand): Promise<FacilityFieldDTO> {
+    const facilityFieldEntity = FacilityFieldFactory.create(command);
+
+    const addFacilityField = await this.facilityFieldRepository.create(facilityFieldEntity);
+
+    if (!addFacilityField)
+      throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'خطا در هنگام ایجاد فیلد رفاهی.', 'Error');
+
+    return FacilityFieldMapper.toDTO(facilityFieldEntity);
+  }
 }

@@ -17,4 +17,16 @@ export class FacilityFieldRepository extends BaseRepository<FacilityField> imple
 
     return dataModel && FacilityField.createFromSnapshot(dataModel);
   };
+
+  async create(entity: FacilityField): Promise<FacilityField> {
+    const dataModel = await prisma.facilityField.create({
+      data: {
+        id: entity.id,
+        value: entity.value,
+        facilityTemplateId: entity.facilityTemplateId,
+      }
+    });
+
+    return dataModel && FacilityField.createFromSnapshot(dataModel);
+  }
 }
