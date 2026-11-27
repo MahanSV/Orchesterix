@@ -10,7 +10,13 @@ export class FacilityTemplateRepository extends BaseRepository<FacilityTemplate>
 
   async findById(id: string): Promise<FacilityTemplate | null> {
     const dataModel = await prisma.facilityTemplate.findUnique({
-      where: { id }
+      where: {
+        id
+      },
+      include: {
+        facilitiesCategory: true,
+        facilityFields: true,
+      }
     });
 
     return dataModel && FacilityTemplate.createFromSnapshot(dataModel);
