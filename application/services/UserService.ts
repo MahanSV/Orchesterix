@@ -49,7 +49,7 @@ export default class UserService implements UserServiceInterface {
     async getUser(id: string): Promise<UserDTO> {
         const user = await this.userRepository.getUserById(id);
 
-        if (!user) throw new ApiError(httpStatus.NOT_FOUND, "Failed to get user.", "Error");
+        if (!user) throw new ApiError(httpStatus.NOT_FOUND, "کاربر یافت نشد.", "Error");
 
         return UserMapper.toDTO(user);
     };
@@ -85,7 +85,7 @@ export default class UserService implements UserServiceInterface {
     };
 
     async updateUser(command: updateUserCommand): Promise<UserDTO> {
-      const user = await this.userRepository.getUserById(command.id);
+      const user = await this.userRepository.checkUserExists(command.id);
 
       if (!user)
         throw new ApiError(httpStatus.NOT_FOUND, 'کاربر یافت نشد.', 'Error');

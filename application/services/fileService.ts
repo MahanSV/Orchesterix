@@ -39,7 +39,7 @@ export class FileService implements FileServiceInterface {
   };
 
   async uploadUserTicketFile(uploaderId: string, ticketId: string, file: Express.Multer.File): Promise<string> {
-    const user = await this.userRepository.getUserById(uploaderId);
+    const user = await this.userRepository.checkUserExists(uploaderId);
 
     if (!user)
       throw new ApiError(httpStatus.NOT_FOUND, 'کاربر یافت نشد.', 'Error');

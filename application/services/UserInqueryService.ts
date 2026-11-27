@@ -32,7 +32,7 @@ export default class UserInqueryService implements UserInqueryServiceInterface {
   };
 
   async createInqueryFromWebService(userId: string): Promise<void> {
-    const user = await this.userRepository.getUserById(userId);
+    const user = await this.userRepository.checkUserExists(userId);
 
     if (!user)
       throw new ApiError(httpStatus.BAD_REQUEST, 'کاربر یافت نشد.', 'Error');

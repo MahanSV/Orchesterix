@@ -49,6 +49,16 @@ export default class UserRepository extends BaseRepository<User> implements User
     return dataModel && User.createFromSnapshot(dataModel);
   };
 
+  async checkUserExists(id: string): Promise<User | null> {
+    const dataModel = await prisma.user.findUnique({
+      where: {
+        id
+      }
+    });
+
+    return dataModel && User.createFromSnapshot(dataModel);
+  };
+
   async getUserByNationalIdAndMobile(nationalId: string, mobile: string): Promise<User | null> {
     const dataModel = await prisma.user.findUnique({
       where: {

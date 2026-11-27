@@ -44,7 +44,7 @@ export class TicketService implements TicketServiceInterface {
   };
 
   async createTicketByUser(command: createTicketCommand): Promise<TicketDTO> {
-    const user = await this.userRepository.getUserById(command.userId);
+    const user = await this.userRepository.checkUserExists(command.userId);
 
     if (!user)
       throw new ApiError(httpStatus.NOT_FOUND, 'کاربر وجود ندارد.', 'Error');
