@@ -26,13 +26,17 @@ class UserInqueryController {
   };
 
   public createInqueryFromWebService = async (req: Request, res: Response): Promise<any> => {
-    const userId = req.body.userId;
+    try {
+      const userId = req.body.userId;
 
-    await this.userInqueryService.createInqueryFromWebService(userId);
+      await this.userInqueryService.createInqueryFromWebService(userId);
 
-    res.status(httpStatus.OK).send({
-      message: 'درخواست استعلامات کاربر با موفقیت ثبت شد.',
-    });
+      res.status(httpStatus.OK).send({
+        message: 'درخواست استعلامات کاربر با موفقیت ثبت شد.',
+      });
+    } catch (error) {
+      throw error;
+    }
   };
 }
 
