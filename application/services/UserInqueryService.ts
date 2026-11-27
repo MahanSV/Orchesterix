@@ -37,7 +37,20 @@ export default class UserInqueryService implements UserInqueryServiceInterface {
     if (!user)
       throw new ApiError(httpStatus.BAD_REQUEST, 'کاربر یافت نشد.', 'Error');
 
+    // دریافت حساب های بانکی کاربر
     await queueManager.addJob("Bank-Accounts", {
+      nationalId: user.nationalId,
+    });
+    // دریافت ضمانتنامه های کاربر
+    await queueManager.addJob("Guarantee", {
+      nationalId: user.nationalId,
+    });
+    // دریافت وام های کاربر
+    await queueManager.addJob("Loan", {
+      nationalId: user.nationalId,
+    });
+    // دریافت امتیاز های کاربر
+    await queueManager.addJob("Point", {
       nationalId: user.nationalId,
     });
   };
