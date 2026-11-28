@@ -66,76 +66,109 @@ export class BankAccountFacilityService implements BankAccountFacilityServiceInt
   };
 
   async createBankAccountFacility(command: createBankAccountFacilityListCommand): Promise<BankAccountFacilityDTO[]> {
-    const user = await this.userRepository.getUserWithUserInQuery(command.userId);
+    const inQuery = await this.getUserInQuery(command.userId);
+    const { facilityFields, facilitiesCategory } = await this.getValidatedFacilityTemplate(command.facilityTemplateId);
 
-    if (!user)
-      throw new ApiError(httpStatus.NOT_FOUND, 'کاربر یافت نشد.', 'Error');
-
-    const inQuery = user?.userInqueries;
-
-    if (!inQuery)
-      throw new ApiError(httpStatus.BAD_REQUEST, 'کاربر دارای استعلامات بانکی نیست.', 'Error');
-
-    const facilityTemplate = await this.facilityTemplateRepository.findById(command.facilityTemplateId);
-
-    if (!facilityTemplate)
-      throw new ApiError(httpStatus.NOT_FOUND, 'قالب تسهیلات رفاهی مورد نظر یافت نشد.', 'Error');
-
-    const facilityFields = facilityTemplate.facilityFields;
-
-    if (!facilityFields)
-      throw new ApiError(httpStatus.FAILED_DEPENDENCY,'فیلد های قالب تسهیلات رفاهی مورد نظر یافت نشد. ', 'Error');
-
-    const facilityCategory = facilityTemplate.facilitiesCategory;
-
-    if (!facilityCategory)
-      throw new ApiError(httpStatus.FAILED_DEPENDENCY,'دسته قالب تسهیلات رفاهی مورد نظر یافت نشد. ', 'Error')
-
-    const validateBankAccountFacility = await this.validateBankAccountAndFacilityFieldIds(command.data, facilityFields);
-
-    if (!validateBankAccountFacility)
+    const isBankAccountFacilityValid = await this.validateBankAccountAndFacilityFieldIds(command.data, facilityFields);
+    if (!isBankAccountFacilityValid)
       throw new ApiError(httpStatus.BAD_REQUEST, 'فیلد رفاهی یا حساب بانکی نامعتبر است.', 'Error');
 
-    const calculateUserCreditForRequest = new CalculateUserCredit(inQuery);
-    const userCredit = calculateUserCreditForRequest.calculateUserCredit();
-
-    const amountFacilityFieldKeyWord = 'مبلغ درخواستی از بانک';
-
-    const facilityFieldAmountRecord = facilityFields.find(facilityField => facilityField.value === amountFacilityFieldKeyWord);
-
-    if (!facilityFieldAmountRecord)
-      throw new ApiError(httpStatus.FAILED_DEPENDENCY, 'فیلد مبلغی پیدا نشد.', 'Error');
-
-    const facilityFieldAmountRecordId = facilityFieldAmountRecord.id;
-
-    const facilityCategoryKey = this.validateFacilityType(facilityCategory.key)
-
+    const userCredit = this.calculateUserCredit(inQuery);
+    const facilityFieldAmountRecordId = this.getFacilityAmountFieldId(facilityFields);
+    const facilityCategoryKey = this.validateFacilityType(facilitiesCategory.key);
     const userFacilityCategoryLimit = this.getFacilityMaxAllowed(userCredit, facilityCategoryKey);
 
     return await Promise.all(
       command.data.map(async (bankAccountFacility) => {
-        if (bankAccountFacility.facilityFieldId === facilityFieldAmountRecordId) {
-          const userAmountRequest = detectStringType(bankAccountFacility.value) === 'integer' ? Number(bankAccountFacility.value) : undefined;
-
-          if (!userAmountRequest)
-            throw new ApiError(httpStatus.CONFLICT, 'مبلغ ورودی نامعتبر میباشد.', 'Error');
-
-          if (userAmountRequest > userFacilityCategoryLimit)
-            throw new ApiError(httpStatus.BAD_REQUEST, 'مبلغ درخواستی از بانک بیش از اعتبار کاربر می باشد.', 'Error');
-
-        }
-
-        const bankAccountFacilityEntity = BankAccountFacilityFactory.create(bankAccountFacility);
-
-        const addBankAccountFacility =
-          await this.bankAccountFacilityRepository.create(bankAccountFacilityEntity);
-
-        if (!addBankAccountFacility)
-          throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'خطا درهنگام ایجاد تسهیلات حساب بانکی کاربر.', 'Error');
-
-        return BankAccountFacilityMapper.toDTO(bankAccountFacilityEntity);
+        this.validateUserAmountRequest(
+          bankAccountFacility,
+          facilityFieldAmountRecordId,
+          userFacilityCategoryLimit,
+        );
+        return this.createSingleBankAccountFacility(bankAccountFacility);
       })
     );
+  };
+
+  // ── مسئولیت: اعتبارسنجی کاربر و دریافت استعلامات بانکی ──
+  private async getUserInQuery(userId: string) {
+    const user = await this.userRepository.getUserWithUserInQuery(userId);
+    if (!user)
+      throw new ApiError(httpStatus.NOT_FOUND, 'کاربر یافت نشد.', 'Error');
+
+    const inQuery = user.userInqueries;
+    if (!inQuery)
+      throw new ApiError(httpStatus.BAD_REQUEST, 'کاربر دارای استعلامات بانکی نیست.', 'Error');
+
+    return inQuery;
+  };
+
+  // ── مسئولیت: اعتبارسنجی قالب تسهیلات و استخراج فیلدها و دسته آن ──
+  private async getValidatedFacilityTemplate(facilityTemplateId: string) {
+    const facilityTemplate = await this.facilityTemplateRepository.findById(facilityTemplateId);
+    if (!facilityTemplate)
+      throw new ApiError(httpStatus.NOT_FOUND, 'قالب تسهیلات رفاهی مورد نظر یافت نشد.', 'Error');
+
+    const { facilityFields, facilitiesCategory } = facilityTemplate;
+
+    if (!facilityFields)
+      throw new ApiError(httpStatus.FAILED_DEPENDENCY, 'فیلد های قالب تسهیلات رفاهی مورد نظر یافت نشد. ', 'Error');
+
+    if (!facilitiesCategory)
+      throw new ApiError(httpStatus.FAILED_DEPENDENCY, 'دسته قالب تسهیلات رفاهی مورد نظر یافت نشد. ', 'Error');
+
+    return { facilityFields, facilitiesCategory };
+  };
+
+  // ── مسئولیت: محاسبه اعتبار کاربر ──
+  private calculateUserCredit(inQuery: ConstructorParameters<typeof CalculateUserCredit>[0]): CalculateUserCreditResult {
+    const calculateUserCreditForRequest = new CalculateUserCredit(inQuery);
+    return calculateUserCreditForRequest.calculateUserCredit();
+  };
+
+  // ── مسئولیت: یافتن آیدی فیلد «مبلغ درخواستی از بانک» ──
+  private getFacilityAmountFieldId(facilityFields: FacilityField[]): FacilityField['id'] {
+    const amountFacilityFieldKeyWord = 'مبلغ درخواستی از بانک';
+
+    const facilityFieldAmountRecord = facilityFields.find(
+      facilityField => facilityField.value === amountFacilityFieldKeyWord,
+    );
+
+    if (!facilityFieldAmountRecord)
+      throw new ApiError(httpStatus.FAILED_DEPENDENCY, 'فیلد مبلغی پیدا نشد.', 'Error');
+
+    return facilityFieldAmountRecord.id;
+  };
+
+  // ── مسئولیت: اعتبارسنجی مبلغ درخواستی کاربر در برابر سقف مجاز ──
+  private validateUserAmountRequest(
+    bankAccountFacility: createBankAccountFacilityCommand,
+    facilityFieldAmountRecordId: FacilityField['id'],
+    userFacilityCategoryLimit: number,
+  ): void {
+    if (bankAccountFacility.facilityFieldId !== facilityFieldAmountRecordId) return;
+
+    const userAmountRequest = detectStringType(bankAccountFacility.value) === 'integer'
+      ? Number(bankAccountFacility.value)
+      : undefined;
+
+    if (!userAmountRequest)
+      throw new ApiError(httpStatus.CONFLICT, 'مبلغ ورودی نامعتبر میباشد.', 'Error');
+
+    if (userAmountRequest > userFacilityCategoryLimit)
+      throw new ApiError(httpStatus.BAD_REQUEST, 'مبلغ درخواستی از بانک بیش از اعتبار کاربر می باشد.', 'Error');
+  };
+
+  // ── مسئولیت: ساخت و ذخیره یک نهاد تسهیلات حساب بانکی ──
+  private async createSingleBankAccountFacility(bankAccountFacility: createBankAccountFacilityCommand): Promise<BankAccountFacilityDTO> {
+    const bankAccountFacilityEntity = BankAccountFacilityFactory.create(bankAccountFacility);
+
+    const addBankAccountFacility = await this.bankAccountFacilityRepository.create(bankAccountFacilityEntity);
+
+    if (!addBankAccountFacility)
+      throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'خطا درهنگام ایجاد تسهیلات حساب بانکی کاربر.', 'Error');
+
+    return BankAccountFacilityMapper.toDTO(bankAccountFacilityEntity);
   };
 
   private async validateBankAccountAndFacilityFieldIds(command: createBankAccountFacilityCommand[], facilityFields: FacilityField[]): Promise<boolean> {
@@ -155,10 +188,7 @@ export class BankAccountFacilityService implements BankAccountFacilityServiceInt
     return bankAccountFacilityValidateResult.every(Boolean);
   };
 
-  private getFacilityMaxAllowed(
-    creditResult: CalculateUserCreditResult,
-    facilityType: FacilityType,
-  ): number {
+  private getFacilityMaxAllowed(creditResult: CalculateUserCreditResult, facilityType: FacilityType): number {
     const facilityMap: Record<FacilityType, number> = {
       Loan: creditResult.facilities.loan.maxAllowed,
       Guarantee: creditResult.facilities.guarantee.maxAllowed,
