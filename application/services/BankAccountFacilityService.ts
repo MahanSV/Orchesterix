@@ -70,7 +70,7 @@ export class BankAccountFacilityService implements BankAccountFacilityServiceInt
 
     const { facilityFields, facilitiesCategory } = await this.getValidatedFacilityTemplate(command.facilityTemplateId);
 
-    const isBankAccountFacilityValid = await this.validateBankAccountAndFacilityFieldIds(command.data, userId, facilityFields);
+    const isBankAccountFacilityValid = await this.validateBankAccountAndFacilityFieldIds(command.data, inQuery.userId, facilityFields);
 
     if (!isBankAccountFacilityValid)
       throw new ApiError(httpStatus.BAD_REQUEST, 'فیلد رفاهی یا حساب بانکی نامعتبر است.', 'Error');
