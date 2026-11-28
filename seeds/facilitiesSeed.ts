@@ -5,6 +5,13 @@ import { FacilityTemplateServiceInterface } from '#application/interfaces/Facili
 import { FacilityFieldServiceInterface } from '#application/interfaces/FacilityFieldServiceInterface.ts';
 import { FacilityFieldService } from '#application/services/FacilityFieldService.ts';
 
+export enum FacilityType {
+  Loan = 'Loan',
+  Guarantee = 'Guarantee',
+  ElectronicPromissoryNote = 'Electronic Promissory Note',
+  Participation = 'Participation',
+}
+
 export interface FacilityField {
   value: string;
   facilityTemplateId: string;
@@ -20,7 +27,7 @@ export interface FacilityTemplate {
 
 export interface FacilitiesCategory {
   name: string;
-  key: string;
+  key: FacilityType;
   order: number;
   facilityTemplates: FacilityTemplate[];
 }

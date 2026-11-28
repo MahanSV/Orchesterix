@@ -9,4 +9,5 @@ export interface BankAccountFacilityRepositoryInterface {
     page: number,
     totalPages: number,
   }>;
+  create(entity: BankAccountFacility): Promise<BankAccountFacility>;
 }

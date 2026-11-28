@@ -68,5 +68,24 @@ export default class BankAccountFacilityRepository extends BaseRepository<BankAc
       page: query.page,
       totalPages: Math.ceil(total / query.limit),
     };
+  };
+
+  async create(entity: BankAccountFacility): Promise<BankAccountFacility> {
+    const dataModel = await prisma.bankAccountFacility.create({
+      data: this.createSchemaFromBankAccountFacility(entity),
+    });
+
+    return dataModel && BankAccountFacility.createFromSnapshot(dataModel);
+  };
+
+  private createSchemaFromBankAccountFacility(entity: BankAccountFacility) {
+    return {
+      id: entity.id,
+      value: entity.value,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
+      bankAccountId: entity.bankAccountId,
+      facilityFieldId: entity.facilityFieldId,
+    };
   }
 }
