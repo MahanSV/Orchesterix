@@ -44,7 +44,7 @@ class BankAccountFacilityController {
       const bankAccountFacilities = await this.bankAccountFacilitiesService.createBankAccountFacility(command);
 
       res.status(httpStatus.OK).send({
-        message: 'لیست تسهیلات بانکی با موفقیت دریافت شد.',
+        message: 'ایجاد تسهیلات بانکی با موفقیت دریافت شد.',
         bankAccountFacilities
       });
     }
