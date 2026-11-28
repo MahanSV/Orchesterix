@@ -7,6 +7,7 @@ export interface UserRepositoryInterface {
     getUserById(id: string): Promise<User | null>;
     checkUserExists(id: string): Promise<User | null>;
     getUserWithUserInQuery(id: string): Promise<User | null>;
+    getUserWithBankAccounts(id: string): Promise<User | null>;
     getUserByNationalIdAndMobile(nationalId: string, mobile: string): Promise<User | null>;
     getUserByMobile(mobile: string): Promise<User | null>;
     updateUser(entity: User): Promise<User>;

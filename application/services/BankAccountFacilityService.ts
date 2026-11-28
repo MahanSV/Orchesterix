@@ -70,7 +70,7 @@ export class BankAccountFacilityService implements BankAccountFacilityServiceInt
 
     const { facilityFields, facilitiesCategory } = await this.getValidatedFacilityTemplate(command.facilityTemplateId);
 
-    const isBankAccountFacilityValid = await this.validateBankAccountAndFacilityFieldIds(command.data, facilityFields);
+    const isBankAccountFacilityValid = await this.validateBankAccountAndFacilityFieldIds(command.data, userId, facilityFields);
 
     if (!isBankAccountFacilityValid)
       throw new ApiError(httpStatus.BAD_REQUEST, 'فیلد رفاهی یا حساب بانکی نامعتبر است.', 'Error');
@@ -95,10 +95,12 @@ export class BankAccountFacilityService implements BankAccountFacilityServiceInt
   // ── مسئولیت: اعتبارسنجی کاربر و دریافت استعلامات بانکی ──
   private async getUserInQuery(userId: string) {
     const user = await this.userRepository.getUserWithUserInQuery(userId);
+
     if (!user)
       throw new ApiError(httpStatus.NOT_FOUND, 'کاربر یافت نشد.', 'Error');
 
     const inQuery = user.userInqueries;
+
     if (!inQuery)
       throw new ApiError(httpStatus.BAD_REQUEST, 'کاربر دارای استعلامات بانکی نیست.', 'Error');
 
@@ -175,21 +177,21 @@ export class BankAccountFacilityService implements BankAccountFacilityServiceInt
     return BankAccountFacilityMapper.toDTO(bankAccountFacilityEntity);
   };
 
-  private async validateBankAccountAndFacilityFieldIds(command: createBankAccountFacilityCommand[], facilityFields: FacilityField[]): Promise<boolean> {
-    const bankAccountFacilityValidateResult = await Promise.all(
-      command.map(
-        async (bankAccountFacility): Promise<boolean> => {
-          // میشه آیدی کاربر رو گرفت و با یکبار کوئری وجود حساب بانکی رو بررسی کرد.
-          const bankAccount = await this.bankAccountRepository.findById(bankAccountFacility.bankAccountId);
-          if (!bankAccount) return false;
+  private async validateBankAccountAndFacilityFieldIds(command: createBankAccountFacilityCommand[], userId: string, facilityFields: FacilityField[]): Promise<boolean> {
+    const user = await this.userRepository.getUserWithBankAccounts(userId);
 
-         return facilityFields.some(facilityField => facilityField.id === bankAccountFacility.facilityFieldId);
-        }
-      )
+    const userBankAccounts = user?.bankAccounts;
+
+    if (!userBankAccounts)
+      throw new ApiError(httpStatus.BAD_REQUEST, 'حساب های بانکی کاربر وجود ندارد.', 'Error');
+
+    // If even one item doesn't exist, it will return false.
+    return command.every(bankAccountFacility =>
+      // check Bank Account Exist.
+      userBankAccounts.some(bank => bank.id === bankAccountFacility.bankAccountId) &&
+      // check Facility Fields Exist.
+      facilityFields.some(field => field.id === bankAccountFacility.facilityFieldId)
     );
-
-    // Even one item doesn't exist it will return false
-    return bankAccountFacilityValidateResult.every(Boolean);
   };
 
   private getFacilityMaxAllowed(creditResult: CalculateUserCreditResult, facilityType: FacilityType): number {

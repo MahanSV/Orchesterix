@@ -70,7 +70,20 @@ export default class UserRepository extends BaseRepository<User> implements User
     });
 
     return dataModel && User.createFromSnapshot(dataModel);
-  }
+  };
+
+  async getUserWithBankAccounts(id: string): Promise<User | null> {
+    const dataModel = await prisma.user.findUnique({
+      where: {
+        id
+      },
+      include: {
+        bankAccounts: true,
+      }
+    });
+
+    return dataModel && User.createFromSnapshot(dataModel);
+  };
 
   async getUserByNationalIdAndMobile(nationalId: string, mobile: string): Promise<User | null> {
     const dataModel = await prisma.user.findUnique({
