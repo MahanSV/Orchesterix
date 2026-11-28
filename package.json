@@ -81,7 +81,8 @@
     "#unittest/*": "./test/unit/*",
     "#application/*": "./application/*",
     "#userServices/*": "./application/userServices/*",
-    "#requestServices/*": "./application/requestServices/*"
+    "#requestServices/*": "./application/requestServices/*",
+    "#seeds/*": "./seeds/*"
   },
   "type": "module",
   "devDependencies": {

@@ -19,7 +19,7 @@ import CalculateUserCredit, { CalculateUserCreditResult } from '#substructure/ut
 import { BankAccountFacilityFactory } from '#domain/factories/BankAccountFacilityFactory.ts';
 import FacilityField from '#models/FacilityField.ts';
 import { detectStringType } from '#substructure/utils/detectStringType.ts';
-import { FacilityType } from '../../seeds/facilitiesSeed.ts';
+import { FacilityType } from '#seeds/facilitiesSeed.ts';
 
 
 export class BankAccountFacilityService implements BankAccountFacilityServiceInterface {
