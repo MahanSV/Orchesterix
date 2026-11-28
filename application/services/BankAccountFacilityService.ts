@@ -207,7 +207,6 @@ export class BankAccountFacilityService implements BankAccountFacilityServiceInt
     if (!validValues.includes(value as FacilityType))
       throw new Error(`Invalid facility type: ${value}`);
 
-
     return value as FacilityType;
   };
 }
