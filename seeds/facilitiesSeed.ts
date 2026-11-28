@@ -38,7 +38,7 @@ class FacilitiesSeed {
   private readonly facilitiesCategoryList: FacilitiesCategoryList = [
     {
       name: "وام",
-      key: "Loan",
+      key: FacilityType.Loan,
       order: 1,
       facilityTemplates: [
         {
@@ -117,7 +117,7 @@ class FacilitiesSeed {
     },
     {
       name: "ضمانتامه",
-      key: "Guarantee",
+      key: FacilityType.Guarantee,
       order: 2,
       facilityTemplates: [
         {
@@ -208,7 +208,7 @@ class FacilitiesSeed {
     },
     {
       name: "سفته الکترونیکی",
-      key: "Electronic Promissory Note",
+      key: FacilityType.ElectronicPromissoryNote,
       order: 3,
       facilityTemplates: [
         {
@@ -222,7 +222,7 @@ class FacilitiesSeed {
     },
     {
       name: "مشارکت",
-      key: "Participation",
+      key: FacilityType.Participation,
       order: 4,
       facilityTemplates: [
         {
