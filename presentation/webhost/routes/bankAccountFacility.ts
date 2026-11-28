@@ -69,7 +69,7 @@ api.get(
 api.post(
   '/',
   {
-    tags: [''],
+    tags: ['BankAccountFacility'],
     request: {
       body: {
         content: {
