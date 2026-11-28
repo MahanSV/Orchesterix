@@ -67,9 +67,11 @@ export class BankAccountFacilityService implements BankAccountFacilityServiceInt
 
   async createBankAccountFacility(command: createBankAccountFacilityListCommand): Promise<BankAccountFacilityDTO[]> {
     const inQuery = await this.getUserInQuery(command.userId);
+
     const { facilityFields, facilitiesCategory } = await this.getValidatedFacilityTemplate(command.facilityTemplateId);
 
     const isBankAccountFacilityValid = await this.validateBankAccountAndFacilityFieldIds(command.data, facilityFields);
+
     if (!isBankAccountFacilityValid)
       throw new ApiError(httpStatus.BAD_REQUEST, 'فیلد رفاهی یا حساب بانکی نامعتبر است.', 'Error');
 
