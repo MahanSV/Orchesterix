@@ -106,6 +106,7 @@ export class BankAccountFacilityService implements BankAccountFacilityServiceInt
   // ── مسئولیت: اعتبارسنجی قالب تسهیلات و استخراج فیلدها و دسته آن ──
   private async getValidatedFacilityTemplate(facilityTemplateId: string) {
     const facilityTemplate = await this.facilityTemplateRepository.findById(facilityTemplateId);
+
     if (!facilityTemplate)
       throw new ApiError(httpStatus.NOT_FOUND, 'قالب تسهیلات رفاهی مورد نظر یافت نشد.', 'Error');
 
@@ -123,6 +124,7 @@ export class BankAccountFacilityService implements BankAccountFacilityServiceInt
   // ── مسئولیت: محاسبه اعتبار کاربر ──
   private calculateUserCredit(inQuery: ConstructorParameters<typeof CalculateUserCredit>[0]): CalculateUserCreditResult {
     const calculateUserCreditForRequest = new CalculateUserCredit(inQuery);
+
     return calculateUserCreditForRequest.calculateUserCredit();
   };
 
@@ -202,9 +204,9 @@ export class BankAccountFacilityService implements BankAccountFacilityServiceInt
   private validateFacilityType(value: string): FacilityType {
     const validValues = Object.values(FacilityType);
 
-    if (!validValues.includes(value as FacilityType)) {
+    if (!validValues.includes(value as FacilityType))
       throw new Error(`Invalid facility type: ${value}`);
-    }
+
 
     return value as FacilityType;
   };
