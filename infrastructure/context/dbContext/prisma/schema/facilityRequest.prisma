@@ -1,0 +1,21 @@
+model FacilityRequest {
+  id          String                @unique
+  status      facilityRequestStatus @default(WAITING_FOR_SUPPORT)
+  isActive    Boolean               @default(true)
+  staffAnswer String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  staffId   String?  @unique
+  user      User     @relation(fields: [userId], references: [id])
+  staff     Staff?   @relation(fields: [staffId], references: [id])
+}
+
+enum facilityRequestStatus {
+  WAITING_FOR_SUPPORT
+  WAITING_FOR_MANAGER
+  REJECTED_BY_SUPPORT
+  REJECTED_BY_MANAGER
+  ACCEPTED
+}

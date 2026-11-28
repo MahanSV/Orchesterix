@@ -8,7 +8,9 @@ model Staff {
   password   String
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
-  ticket     Ticket?
+
+  ticket           Ticket?
+  facilityRequests FacilityRequest[]
 
   @@unique([nationalId, role], name: "nationalId_role", map: "nationalId_role")
 }

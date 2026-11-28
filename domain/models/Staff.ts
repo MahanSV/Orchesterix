@@ -1,6 +1,7 @@
 import BaseModel from '#models/base/baseModel.ts';
 import Ticket, {TicketSnapshotParams} from "#models/Ticket.ts";
 import { StaffRole, StaffStatus } from '#domain/enums/staff.ts';
+import FacilityRequest, { FacilityRequestSnapshotParams } from '#models/FacilityRequest.ts';
 
 export interface StaffConstructorParams {
     id: string;
@@ -25,6 +26,7 @@ export interface StaffSnapshotParams {
     createdAt: Date;
     updatedAt: Date;
     ticket?: TicketSnapshotParams;
+    facilityRequests?: FacilityRequestSnapshotParams; // 1 to 1 relation
 }
 
 class Staff extends BaseModel {
@@ -37,6 +39,7 @@ class Staff extends BaseModel {
     private _createdAt!: Date;
     private _updatedAt!: Date;
     private _ticket?: Ticket;
+    private _facilityRequests?: FacilityRequest;
 
     constructor() {
         super();
@@ -74,6 +77,7 @@ class Staff extends BaseModel {
         staff.createdAt = snapshot.createdAt;
         staff.updatedAt = snapshot.updatedAt;
         staff.ticket = snapshot.ticket && Ticket.createFromSnapshot(snapshot.ticket);
+        staff.facilityRequests = snapshot.facilityRequests && FacilityRequest.createFromSnapshot(snapshot.facilityRequests);
 
         return staff;
     };
@@ -139,6 +143,13 @@ class Staff extends BaseModel {
     };
     public set ticket(value) {
         this._ticket = value;
+    };
+
+    public get facilityRequests() {
+      return this._facilityRequests;
+    };
+    public set facilityRequests(value) {
+      this._facilityRequests = value;
     };
 }
 

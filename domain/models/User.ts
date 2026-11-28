@@ -3,6 +3,7 @@ import UserInquery, {UserInquerySnapshotParams} from "#models/UserInquery.ts";
 import Ticket, {TicketSnapshotParams} from "#models/Ticket.ts";
 import BankAccount, {BankAccountSnapshotParams} from "#models/BankAccount.ts";
 import { userStatus } from '#domain/enums/user.ts';
+import FacilityRequest, { FacilityRequestSnapshotParams } from '#models/FacilityRequest.ts';
 
 
 export interface UserConstructorParams {
@@ -30,6 +31,7 @@ export interface UserSnapshotParams {
     bankAccounts?: BankAccountSnapshotParams[];
     tickets?: TicketSnapshotParams[];
     userInqueries?: UserInquerySnapshotParams;
+    facilityRequests?: FacilityRequestSnapshotParams[];
 }
 
 class User extends BaseModel {
@@ -44,6 +46,7 @@ class User extends BaseModel {
     private _bankAccounts?: BankAccount[];
     private _tickets?: Ticket[];
     private _userInqueries?: UserInquery;
+    private _facilityRequests?: FacilityRequest[];
 
 
     constructor() {
@@ -84,6 +87,7 @@ class User extends BaseModel {
         user.bankAccounts = snapshot.bankAccounts && snapshot.bankAccounts?.map(data => BankAccount.createFromSnapshot(data));
         user.tickets = snapshot.tickets && snapshot.tickets?.map(data => Ticket.createFromSnapshot(data));
         user.userInqueries = snapshot.userInqueries && UserInquery.createFromSnapshot(snapshot.userInqueries);
+        user.facilityRequests = snapshot.facilityRequests && snapshot.facilityRequests.map(data => FacilityRequest.createFromSnapshot(data));
 
         return user;
     };
@@ -164,6 +168,13 @@ class User extends BaseModel {
     public set userInqueries(value) {
         this._userInqueries = value;
     };
+
+    public get facilityRequests() {
+      return this._facilityRequests;
+    };
+    public set facilityRequests(value) {
+      this._facilityRequests = value;
+    }
 }
 
 export default User;

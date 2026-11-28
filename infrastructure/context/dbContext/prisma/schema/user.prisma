@@ -9,9 +9,10 @@ model User {
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
 
-  bankAccounts  BankAccount[]
-  tickets       Ticket[]
-  userInqueries UserInquery?
+  bankAccounts     BankAccount[]
+  tickets          Ticket[]
+  userInqueries    UserInquery?
+  facilityRequests FacilityRequest[]
 }
 
 enum userStatus {
